@@ -5,9 +5,9 @@ export default class Home extends Component{
 
     render(){
         return(
-            <View>
+            <View >
                 <Text>
-                    HEllllllo
+                    Hellooooooooooo
                 </Text>
             </View>
         )
