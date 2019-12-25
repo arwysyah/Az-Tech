@@ -1,18 +1,4 @@
-// import React, {Component} from 'react'
-// import {View,Text,Stylesheet} from 'react-native'
 
-// export default class History extends Component{
-
-//     render(){
-//         return(
-//             <View>
-//                 <Text>
-//                     History
-//                 </Text>
-//             </View>
-//         )
-//     }
-// }
 
 
 import React, {Component} from 'react';
@@ -43,10 +29,11 @@ import {
 
 // import {ScrollView} from 'react-native-gesture-handler';
 
-export default class Wishlist extends Component {
+export default class Voucher extends Component {
   state = {
     users: [],
-    id:166001
+    id:166001,
+    id_transaction: this.props.navigation.getParam('id_transaction')
   };
 
   componentDidMount() {
@@ -55,9 +42,9 @@ export default class Wishlist extends Component {
 
   getUsers = () => {
     axios
-      .get(`https://onestopapi.herokuapp.com/user/history/${this.state.id}`)
+      .get(`https://onestopapi.herokuapp.com/user/voucher/${this.state.id_transaction}`)
       .then(res=>{
-        //   console.log('res',res)
+          console.log('HASIL GET USER',res.data.response)
         this.setState({
             users:res.data.response
         })
@@ -68,6 +55,7 @@ export default class Wishlist extends Component {
 
   render() {
     // console.log(' ... Opening History Page');
+    console.log('ID TRANSACTTION DI VOUCER', this.state.id_transaction)
 
     return (
       <View style={{ backgroundColor:"F2F1F1" }}>
@@ -92,7 +80,7 @@ export default class Wishlist extends Component {
                 backgroundColor: '#fff',
                 fontSize: 20
                }}>
-              Wishlist
+              Voucher
             </Text>  
            </Body>
           
@@ -112,7 +100,9 @@ export default class Wishlist extends Component {
                   borderRadius: 20,
                 }}>
 
-                <TouchableOpacity onPress={() => this.props.onPress({...item})}>
+                <TouchableOpacity onPress={() => {
+                    console.log(item.id_transaction)
+                }}>
                   <Image
                     source={{uri: item.image}}
                     style={{
@@ -151,8 +141,21 @@ export default class Wishlist extends Component {
                 
                 <Text 
                   style={{
-                    marginTop: 100,
+                    marginTop: 70,
                     marginLeft: -150,
+                    backgroundColor: 'grey',
+                    color: 'white',
+                    borderRadius: 12,
+                    height: 28,
+                    textAlign: 'center',
+                    width: 100
+                  }}>
+                  No.ID{item.id_voucher}
+                </Text>
+                <Text 
+                  style={{
+                    marginTop: 120,
+                    marginLeft: -90,
                     backgroundColor: 'green',
                     color: 'white',
                     borderRadius: 12,
@@ -162,20 +165,8 @@ export default class Wishlist extends Component {
                   }}>
                   {item.status}
                 </Text>
-                {/* <Text
-                  style={{
-                    marginTop: 130,
-                    marginLeft: -75,
-                    backgroundColor: '#a5e830',
-                    color: 'white',
-                    borderRadius: 15,
-                    height: 23,
-                    textAlign: 'center',
-                    width: 120,
-                    position: 'relative',
-                  }}>
-                  {item.genre}
-                </Text> */}
+              
+              
               </View>
             );
           })}

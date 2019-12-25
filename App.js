@@ -12,6 +12,7 @@ import Wishlists from './Screen/Wishlist'
 import Profile from './Screen/Profile'
 import Detail from './Screen/Detail'
 import SplashScreen from './Screen/SplashScreen'
+import Voucher from './Screen/Voucher'
 
 
 const AuthStack = createStackNavigator({
@@ -45,7 +46,21 @@ const AppStack= createStackNavigator({
     navigationOptions: {
       header: null
     }
-  }
+  },
+  Voucher :{
+    screen:Voucher,
+    navigationOptions: {
+      header: null
+    }
+  },
+})
+
+
+const HistoryNavigation = createStackNavigator({
+  History,
+  Voucher
+}, {
+  headerMode: 'none'
 })
 
 
@@ -66,7 +81,7 @@ const BottomNavigator = createBottomTabNavigator(
       },
     },
         History: {
-      screen: History,
+      screen: HistoryNavigation,
       navigationOptions: {
         tabBarLabel: 'History',
         tabBarIcon: ({tintColor}) => (
@@ -78,20 +93,7 @@ const BottomNavigator = createBottomTabNavigator(
         ),
       },
     },
-  //   Wishlists:{
-  //     screen: Wishlists,
-  //     navigationOptions:{
-  //       tabBarLabel:'Wishlist',
-  //       tabBarIcon:({tintColor})=>{
-  //         <Icon
-  //         type="AntDesign"
-  //         name="inbox"
-  //         style={{color: tintColor, fontSize: 23}}
-  //       />
-  //       }
-  //     }
-  //   }
-  // },
+
   Wishlists: {
     screen: Wishlists,
     navigationOptions: {

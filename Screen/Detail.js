@@ -83,7 +83,7 @@ export default class Detail extends Component {
                     contact: '082369400291',
                     name: 'Razorpay Software',
                   },
-                  theme: {color: '#F37254'},
+                  theme: {color: 'green'},
                 };
                 await RazorpayCheckout.open(options)
                   .then(data => {
@@ -118,7 +118,7 @@ export default class Detail extends Component {
                     console.log(formData, 'fo');
                     console.log('succes');
                     ToastAndroid.show(
-                      'Booking Successfuly',
+                      'Transaction Succesfully',
                       ToastAndroid.SHORT,
                     );
                     // await this.props.dispatch(addBorrow(userId, userToken, formData))
@@ -128,7 +128,7 @@ export default class Detail extends Component {
             });
             console.log(part.id_partner);
             console.log('succes');
-            ToastAndroid.show('Succes Wishlist', ToastAndroid.SHORT);
+            ToastAndroid.show('Success Paid Your Coupon', ToastAndroid.SHORT);
           } catch (error) {
             console.log('error', error);
           }
@@ -191,6 +191,15 @@ export default class Detail extends Component {
                     top: 4,
                   }}>
                   {part.name}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                    top: 4,
+                  }}>
+                  {part.stock}
                 </Text>
                 <Text
                   style={{
@@ -300,9 +309,9 @@ export default class Detail extends Component {
                 }}
                 title={part.name}>
                 <Callout style={{height: 120}}>
-                  <Text>{part.owner}</Text>
+                  <Text>{part.location}</Text>
                   <Text>{part.name}</Text>
-                  <Image style={styles.imaps} source={{uri: part.image_url}} />
+                  <Image style={styles.imaps} source={{uri: part.image}} />
                 </Callout>
               </Marker>
             </MapView>

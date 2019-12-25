@@ -52,10 +52,11 @@ export default class Login extends Component {
             // res.data.message,
             // res.data.succes,
             res.data.token,
+           
             // res.data.data.token
             
           );
-          
+          console.log(res.data.message,'message')
             // console.log('res', res.data.data.token)
           if (res.data.status == 200) {
             AsyncStorage.setItem('jwt', res.data.token);
@@ -63,7 +64,7 @@ export default class Login extends Component {
             //  console.log('jwkkkt', data)
            (ToastAndroid.show('Login Success', ToastAndroid.SHORT));
           } else {
-            ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
+            ToastAndroid.show('invalid password', ToastAndroid.SHORT);
           }
           
         })
@@ -72,14 +73,14 @@ export default class Login extends Component {
         });
   
       console.log(formData)
-      this.props.navigation.navigate('Home');
+      // this.props.navigation.navigate('Home');
       //fungsi login disini
     }
   render() {
-    if (this.state.loginKey) {
-        console.log(this.state.loginKey,'username')
-        return this.props.navigation.navigate('Home');
-    }
+    // if (this.state.loginKey) {
+    //     console.log(this.state.loginKey,'username')
+    //     return this.props.navigation.navigate('Home');
+    // }
     return (
     //   <KeyboardAvoidingView behavior="padding" enabled>
     <>
