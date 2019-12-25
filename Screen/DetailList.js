@@ -16,8 +16,8 @@ import {ScrollView} from 'react-native-gesture-handler';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 import RazorpayCheckout from 'react-native-razorpay';
 import Axios from 'axios';
-import decode from 'jwt-decode';
-import AsyncStorage from '@react-native-community/async-storage';
+import decode from 'jwt-decode'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -28,14 +28,15 @@ export default class Detail extends Component {
   state = {
     order: 5,
     id_user: 166004,
+    
   };
 
   async componentDidMount() {
     const userToken = await AsyncStorage.getItem('jwt');
     const user = await decode(userToken);
-    userId = user.id;
-    console.log(userId, 'user');
-    let part = this.props.navigation.getParam('part');
+    userId=user.id
+    console.log(userId,'user')
+    let part = this.props.navigation.getParam('d');
   }
   handleSubmit = () => {
     Alert.alert('Confirm Paid', 'Are you want to buy this voucher?', [
@@ -50,10 +51,10 @@ export default class Detail extends Component {
           try {
             const userToken = await AsyncStorage.getItem('jwt');
             const user = await decode(userToken);
-            userId = user.id;
-            console.log(userId, 'user');
+            userId=user.id
+            console.log(userId,'user')
 
-            let part = this.props.navigation.getParam('part');
+            let part = this.props.navigation.getParam('d');
             id_partner = part.id_partner;
             console.log(part.id_partner, 'part id');
             console.log(id_partner, 'id');
@@ -91,15 +92,15 @@ export default class Detail extends Component {
                     alert(`Success: ${data.razorpay_payment_id}`);
                   })
                   .then(async () => {
-                    let data = await AsyncStorage.getItem('jwt');
-
+                    let data =await  AsyncStorage.getItem('jwt');
+               
                     const userToken = await AsyncStorage.getItem('jwt');
                     const user = await decode(userToken);
-                    userId = user.id;
+                    userId=user.id
                     console.log('user id', user.id);
                     // console.log('resu',user.result) //ini penting
-                    let part = this.props.navigation.getParam('part');
-                    let id_partner = part.id_partner;
+                    let part = this.props.navigation.getParam('d');
+                  let id_partner = part.id_partner;
                     id_user = userId;
                     // console.log('data',data.id,idBook) //navigator
                     let formData = {
@@ -151,7 +152,7 @@ export default class Detail extends Component {
     }
   };
   render() {
-    const part = this.props.navigation.getParam('part');
+    const part = this.props.navigation.getParam('d');
 
     return (
       <View>
@@ -179,7 +180,7 @@ export default class Detail extends Component {
               }}>
               <View style={styles.card}>
                 <Image
-                  source={{uri: part.image}}
+                  source={{uri: d.image}}
                   style={{height: 160, width: 240, borderRadius: 10}}
                 />
 
@@ -190,7 +191,7 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  {part.name}
+                  {d.name}
                 </Text>
                 <Text
                   style={{
@@ -199,7 +200,7 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  Stock : {part.stock}
+                  {d.stock}
                 </Text>
                 <Text
                   style={{
@@ -208,13 +209,56 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  {part.location}
+                  {d.location}
                 </Text>
               </View>
-              <View style={{flexDirection: 'row', top: 110}}></View>
+              <View style={{flexDirection: 'row', top: 110}}>
+                {/* <TouchableOpacity>
+              <Icon
+                type="Feather"
+                name="minus-circle"
+                style={{left: 48, top: 5}}
+              />
+            </TouchableOpacity> */}
+                {/* <View style={styles.box}>
+                  <Text style={{textAlign: 'center', fontSize: 30}}>
+                    {this.state.order}
+                  </Text>
+                </View> */}
+
+                {/* <Icon
+              type="Feather"
+              name="plus-circle"
+              size={28}
+              style={{left: 90, top: 5}}
+            /> */}
+              </View>
+              {/* <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleMinus();
+                  }}>
+                  <Icon
+                    type="Feather"
+                    name="minus-circle"
+                    style={{left: 48, top: 10}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    // this.handlePlus();
+                    this.handleSubmit();
+                  }}>
+                  <Icon
+                    type="Feather"
+                    name="plus-circle"
+                    style={{left: 48, top: 30}}
+                  />
+                </TouchableOpacity>
+              </View> */}
             </View>
-            <View style={{height: 200}}>
-              <View style={{marginHorizontal: 20, top: 40}}>
+            <View style={{height: 600}}>
+              <View style={{marginHorizontal:20, top: 40}}>
                 <TouchableOpacity
                   onPress={() => {
                     this.handleSubmit();
@@ -225,35 +269,55 @@ export default class Detail extends Component {
                   </Text>
                 </TouchableOpacity>
                 <View>
-                  <Text>{part.description}</Text>
+                  <Text>
+                    Description is something that gets in the way of many
+                    authors. Why? Well, because it's so darn hard to write. And
+                    no wonder. If you're not careful, descriptive sequences can
+                    become static, even dull. Writing action and dialogue is so
+                    much more fun. On top of that, description incorporates so
+                    many elements. It doesn't just cover describing the setting
+                    -- it also involves descriptions of the characters' clothes
+                    and appearance, the "props" your characters use, the
+                    weather, and so forth. If you're not very accomplished at
+                    writing description, then sometimes you might want to avoid
+                    writing it. But then, you can wind up with stories where
+                    people wander vague hallways or buildings, and readers don't
+                    get a sense of time or place from your story. A story
+                    without enough description is missing something. People who
+                    read a story that's lacking in description might ask "Where
+                    does this take place? Are there buildings around them?" I
+                    must admit that often happens when people look at my early
+                    drafts.
+                  </Text>
                 </View>
               </View>
             </View>
 
-            <View style={{height: 500, marginHorizontal: 20}}>
-              <MapView
-                style={styles.map}
-                provider={PROVIDER_GOOGLE}
-                region={{
+            <View style={{height: 500,marginHorizontal:20}}>
+            <MapView
+              style={styles.map}
+              provider={PROVIDER_GOOGLE}
+              region={{
+                latitude: Number(part.latitude),
+                longitude: Number(part.longitude),
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA,
+              }}>
+              <Marker
+                coordinate={{
                   latitude: Number(part.latitude),
                   longitude: Number(part.longitude),
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }}>
-                <Marker
-                  coordinate={{
-                    latitude: Number(part.latitude),
-                    longitude: Number(part.longitude),
-                  }}
-                  title={part.name}>
-                  <Callout style={{height: 120}}>
-                    <Text>{part.location}</Text>
-                    <Text>{part.name}</Text>
-                    <Image style={styles.imaps} source={{uri: part.image}} />
-                  </Callout>
-                </Marker>
-              </MapView>
-            </View>
+                }}
+                title={part.name}>
+                <Callout style={{height: 120}}>
+                  <Text>{part.location}</Text>
+                  <Text>{part.name}</Text>
+                  <Image style={styles.imaps} source={{uri: part.image}} />
+                </Callout>
+              </Marker>
+            </MapView>
+            
+          </View>
           </ScrollView>
         </View>
       </View>

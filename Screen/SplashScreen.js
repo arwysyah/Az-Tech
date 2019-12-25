@@ -26,7 +26,7 @@ export default class SplashScreen extends Component {
   }
 
   render() {
-    console.log(AsyncStorage.getItem('jwt'))
+    // console.log(AsyncStorage.getItem('jwt'))
     
     return (
       <View style={{flex: 1, backgroundColor: '#02656b'}}>

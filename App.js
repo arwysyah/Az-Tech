@@ -13,6 +13,8 @@ import Profile from './Screen/Profile'
 import Detail from './Screen/Detail'
 import SplashScreen from './Screen/SplashScreen'
 import Voucher from './Screen/Voucher'
+import DetailList from './Screen/DetailList'
+import Search from './Screen/Search'
 
 
 const AuthStack = createStackNavigator({
@@ -47,12 +49,22 @@ const AppStack= createStackNavigator({
       header: null
     }
   },
-  Voucher :{
-    screen:Voucher,
+  DetailList :{
+    screen:DetailList,
     navigationOptions: {
       header: null
     }
   },
+  Search: {
+    screen: Search,
+    navigationOptions: {
+     
+      header: null,
+     
+    }
+  
+},
+
 })
 
 

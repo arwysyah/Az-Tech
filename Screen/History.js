@@ -14,7 +14,6 @@
 //     }
 // }
 
-
 import React, {Component} from 'react';
 import {Image} from 'react-native';
 import axios from 'axios';
@@ -46,7 +45,7 @@ import {
 export default class History extends Component {
   state = {
     users: [],
-    id:166001
+    id: 166001,
   };
 
   componentDidMount() {
@@ -56,33 +55,35 @@ export default class History extends Component {
   getUsers = () => {
     axios
       .get(`https://onestopapi.herokuapp.com/user/history/${this.state.id}`)
-      .then(res=>{
+      .then(res => {
         //   console.log('res',res)
         this.setState({
-            users:res.data.response
-        })
+          users: res.data.response,
+        });
         // console.log(res.data.response,'resdata')
-        console.log('users',this.state.users)
-      })
+        console.log('users', this.state.users);
+      });
   };
 
   render() {
     // console.log(' ... Opening History Page');
-    console.log(this.state.users)
+    console.log(this.state.users);
 
     return (
-      <View style={{ backgroundColor:"F2F1F1" }}>
-       
-        <Header style={{ backgroundColor:"#fff", marginBottom: 50, height: 60 }}>
-          <View> 
-              <Icon
-                onPress={() => this.props.navigation.goBack()}
-                style={{color: 'black', marginTop: 23, marginLeft: 16}}
-                name="arrow-back"
-                /> 
-           </View> 
-
-           <Body>
+      <View style={{backgroundColor: '#F2F1F1',flex:1}}>
+        <Header
+          style={{backgroundColor: 'white', marginBottom: 50, height: 60}}>
+         <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}>
+          <View>
+              
+            <Icon
+              
+              style={{color: 'black', marginTop: 23, marginLeft: 16}}
+              name="arrow-back"
+            />
+          </View>
+          </TouchableOpacity>
+          <Body style={{backgroundColor:'transparent'}}>
             <Text
               style={{
                 marginLeft: 24,
@@ -91,17 +92,22 @@ export default class History extends Component {
                 width: 213,
                 textAlign: 'center',
                 backgroundColor: '#fff',
-                fontSize: 20
-               }}>
+                fontSize: 20,
+              }}>
               History
-            </Text>  
-           </Body>
-          
+            </Text>
+          </Body>
         </Header>
         <ScrollView>
           {/* <Container style={{padding: 21}}> */}
           {this.state.users.map((item, index) => {
             return (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('Voucher', {
+                      id_transaction: item.id_transaction,
+                    });
+                  }}>
               <View
                 key={index}
                 style={{
@@ -112,58 +118,39 @@ export default class History extends Component {
                   backgroundColor: '#fff',
                   borderRadius: 20,
                 }}>
-
-                <TouchableOpacity onPress={() => {
-                    this.props.navigation.navigate('Voucher', {
-                        id_transaction: item.id_transaction
-                    })
-                }}>
-                  <Image
-                    source={{uri: item.image}}
-                    style={{
-                      width: 150,
-                      height: 190,
-                      borderRadius: 20,
-                      backgroundColor: 'violet'
-                    }}
-                  />
-                </TouchableOpacity>
-
+               
                 <Text
                   style={{
                     alignContent: 'space-between',
                     marginLeft: 15,
                     marginTop: 20,
                     width: 147,
-                    fontSize:12,
-                    
-
-                   }}>
-                   {/* ID Transaction : */}
+                    fontSize: 12,
+                  }}>
+                  {/* ID Transaction : */}
                   {/* {item.id_transaction}  */}
                 </Text>
-                
+
                 <Text
                   style={{
                     fontSize: 15,
-                    marginTop: 35,
-                    paddingTop: 5,
+                   textAlign:'center',
                     marginLeft: -150,
                     width: 150,
+                    color:'green'
                   }}>
                   {item.name}
                 </Text>
-                
-                <Text 
+
+                <Text
                   style={{
-                    marginTop: 100,
-                    marginLeft: -150,
+                    textAlign: 'center',
                     backgroundColor: 'green',
                     color: 'white',
                     borderRadius: 12,
                     height: 28,
                     textAlign: 'center',
-                    width: 85
+                    width: 85,
                   }}>
                   {item.status}
                 </Text>
@@ -182,6 +169,7 @@ export default class History extends Component {
                   {item.genre}
                 </Text> */}
               </View>
+              </TouchableOpacity>
             );
           })}
           {/* </Container> */}

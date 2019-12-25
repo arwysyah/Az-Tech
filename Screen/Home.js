@@ -54,7 +54,7 @@ import decode from 'jwt-decode';
         <View>
           <View>
             <View style={styles.topNav}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Search')}}>
                 <Icon
                   style={{color: 'black', alignItems: 'center'}}
                   name="search"
@@ -116,30 +116,30 @@ import decode from 'jwt-decode';
           <View>
             
           <View style={styles.experienceView}>
-                {this.state.partner.map((d, index) => (
+                {this.state.partner.map((part, index) => (
                   <View style={{width: 160,marginTop:20}}
                    key={index}
                    >
-                    {/* <TouchableOpacity
+                    <TouchableOpacity
                       onPress={id => {
                         this.props.navigation.navigate('Detail', {
-                          d: {...d},
+                          part: {...part},
                         });
-                      }}> */}
+                      }}>
                       <Image
                         style={{height: 100, width: 145, borderRadius: 5,top:8}}
-                        source={{uri:d.image}}
+                        source={{uri:part.image}}
                       />
                       <Text style={{fontSize: 12, color: 'brown'}}>
-                        {d.name.toUpperCase()}
+                        {part.name.toUpperCase()}
                       </Text>
                       <Text style={styles.commonText}>
-                        {d.location.toUpperCase()}
+                        {part.location.toUpperCase()}
                       </Text>
                       <Text style={{fontSize: 16, color: 'grey'}}>
-                       Rp. {d.price}
+                       Rp. {part.price}
                       </Text>
-                    {/* </TouchableOpacity> */}
+                    </TouchableOpacity>
                   </View>
                  ))}
 
