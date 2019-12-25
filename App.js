@@ -15,7 +15,7 @@ import SplashScreen from './Screen/SplashScreen'
 import Voucher from './Screen/Voucher'
 import DetailList from './Screen/DetailList'
 import Search from './Screen/Search'
-
+import Test from './Screen/test'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -185,3 +185,11 @@ class App extends Component{
   }
 }
 export default SwitchScreen
+
+// export default class App extends React.Component{
+//   render(){
+//     return(
+//       < Test />
+//     )
+//   }
+// }

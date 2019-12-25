@@ -9,6 +9,7 @@ export default class Profile extends Component{
     constructor(props){
         super(props) 
         this.state={
+          
             username: '',
             fullname: '',
             email: '',
@@ -25,8 +26,9 @@ export default class Profile extends Component{
         console.log(profile,'profile')
         this.setState({
           username: profile.username,
-          password: profile.password
-          
+          password: profile.password,
+          fullname:profile.fullname,
+          email:profile.email
         });
      console.log(this.state.username,'user')
       }
@@ -60,11 +62,27 @@ export default class Profile extends Component{
         
        
       }
+handleSave=()=>{
+  // console.log('hello')
+  // console.log('usernm',this.state.username)
+  let form = {
+    username:this.state.username,
+    email:this.state.email,
+    fullname:this.state.fullname
+  }
+  console.log('form',form)
+}
 
+handleChange = key => val => {
+  this.setState({[key]: val});
+  console.log(val,'val')
+};
 
 
     render(){
+     const {username,email,fullname} = this.state
         return(
+          
             <ScrollView
 				showsHorizontalScrollIndicator={false}
 				style={{ horizontal: 'true', flex: 1 }}>
@@ -96,18 +114,24 @@ export default class Profile extends Component{
             <View style={{backgroundColor: '#Ffff', height:400, borderRadius:25, width: 400, marginTop: 15,alignSelf:'center'}}>
             <View style={styles.profile}>
             <Item inlineLabel style={styles.form}>
-              <Label>Username</Label>
+        <Label> username</Label>
               <Input 
-              returnKeyType="next"/>
+              value={username}
+              returnKeyType="next"
+              onChangeText={this.handleChange('username')}/>
             </Item>
             <Item inlineLabel last style={styles.form}>
-              <Label>Fullname</Label>
-              <Input
+        <Label>fullname</Label>
+              <Input 
+              value={fullname}
+              onChangeText={ this.handleChange('fullname')}
               returnKeyType="next" />
             </Item>
             <Item inlineLabel style={styles.form}>
               <Label>Email</Label>
               <Input
+              value={email}
+              onChangeText={ this.handleChange('email')}
               returnKeyType="next" />
             </Item>
             <Item inlineLabel last style={styles.form}>
@@ -120,6 +144,7 @@ export default class Profile extends Component{
 
             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
             <Button
+            onPress={()=>this.handleSave()}
               rounded
               style={styles.buttonlogin}>
               <Text style={{fontSize: 18, color: 'white'}}>SAVE</Text>

@@ -1,18 +1,4 @@
-// import React, {Component} from 'react'
-// import {View,Text,Stylesheet} from 'react-native'
 
-// export default class History extends Component{
-
-//     render(){
-//         return(
-//             <View>
-//                 <Text>
-//                     History
-//                 </Text>
-//             </View>
-//         )
-//     }
-// }
 
 import React, {Component} from 'react';
 import {Image} from 'react-native';
@@ -32,29 +18,36 @@ import {
   Right,
   Button,
 } from 'native-base';
-
+import decode from 'jwt-decode'
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 // import {ScrollView} from 'react-native-gesture-handler';
 
 export default class History extends Component {
   state = {
     users: [],
-    id: 166001,
+    id_user:''
+    // id: 166001,
   };
 
-  componentDidMount() {
-    this.getUsers();
+  async componentDidMount() {
+    await this.getUsers();
   }
 
-  getUsers = () => {
+  getUsers = async() => {
+    const userToken = await AsyncStorage.getItem('jwt');
+            const user = await decode(userToken);
+            userId = user.id;
+            console.log(userId, 'user');
+            
     axios
-      .get(`https://onestopapi.herokuapp.com/user/history/${this.state.id}`)
+      .get(`https://onestopapi.herokuapp.com/user/history/${userId}`)
       .then(res => {
         //   console.log('res',res)
         this.setState({

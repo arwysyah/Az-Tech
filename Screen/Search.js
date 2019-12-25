@@ -55,7 +55,7 @@ export default class Search extends Component {
               onPress={() => {
                 this.props.navigation.goBack();
               }}>
-              <Icon style={{color: 'white'}} name="arrow-back" />
+              <Icon style={{color: 'black'}} name="arrow-back" />
             </Button>
           </Left>
           <Body>

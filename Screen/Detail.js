@@ -11,7 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import {Button, Icon} from 'native-base';
-
+import getDirections from 'react-native-google-maps-directions';
 import {ScrollView} from 'react-native-gesture-handler';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 import RazorpayCheckout from 'react-native-razorpay';
@@ -37,6 +37,52 @@ export default class Detail extends Component {
     console.log(userId, 'user');
     let part = this.props.navigation.getParam('part');
   }
+
+  handleGetDirections = () => {
+    let part = this.props.navigation.getParam('part');
+    console.log(part, 'part');
+    const data = {
+      //  source: {
+      //   latitude: -33.8356372,
+      //   longitude: 18.6947617
+      // },
+      destination: {
+        latitude: Number(part.latitude),
+        longitude: Number(part.longitude),
+      },
+      params: [
+        {
+          key: 'travelmode',
+          value: 'driving',
+        },
+        {
+          key: 'dir_action',
+          value: 'navigate',
+        },
+      ],
+      //   waypoints: [
+      //     {
+      //       latitude: -33.8600025,
+      //       longitude: 18.697452,
+      //     },
+      //     {
+      //       latitude: -33.8600026,
+      //       longitude: 18.697453,
+      //     },
+      //        {
+      //       latitude: -33.8600036,
+      //       longitude: 18.697493,
+      //     },
+      //        {
+      //       latitude: -33.8600046,
+      //       longitude: 18.69743,
+      //     },
+
+      //   ]
+    };
+
+    getDirections(data);
+  };
   handleSubmit = () => {
     Alert.alert('Confirm Paid', 'Are you want to buy this voucher?', [
       {
@@ -229,7 +275,13 @@ export default class Detail extends Component {
                 </View>
               </View>
             </View>
-
+            <View style={{justifyContent:'center',top:-20,left:120}}> 
+              <TouchableOpacity style={styles.button1} onPress={this.handleGetDirections}>
+               
+                  <Text>Get The Location</Text>
+                
+              </TouchableOpacity>
+            </View>
             <View style={{height: 500, marginHorizontal: 20}}>
               <MapView
                 style={styles.map}
@@ -301,12 +353,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     textAlign: 'center',
-    justifyContent: 'center',
+   
     height: 45,
     width: 120,
     // shadowColor:'black',
     backgroundColor: 'green',
     borderRadius: 10,
+    // shadowOpacity:100,
+    borderTopColor: 'black',
+    // shadowOffset:30
+  },
+  button1: {
+    alignItems: 'center',
+alignContent:'center'
+,    textAlign: 'center',
+    justifyContent: 'center',
+    height: 30,
+    width: 120,
+    // shadowColor:'black',
+    backgroundColor: 'yellow',
+    borderRadius: 5,
     // shadowOpacity:100,
     borderTopColor: 'black',
     // shadowOffset:30

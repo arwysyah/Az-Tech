@@ -70,7 +70,7 @@ export default class Wishlist extends Component {
     // console.log(' ... Opening History Page');
 
     return (
-      <View style={{ backgroundColor:"F2F1F1" }}>
+      <View style={{flex:1, backgroundColor:"#F2F1F1" }}>
        
         <Header style={{ backgroundColor:"#fff", marginBottom: 50, height: 60 }}>
           <View> 
@@ -99,6 +99,8 @@ export default class Wishlist extends Component {
         </Header>
         <ScrollView>
           {/* <Container style={{padding: 21}}> */}
+          {/* <TouchableOpacity onPress={() => this.props.onPress({...item})}> */}
+               
           {this.state.users.map((item, index) => {
             return (
               <View
@@ -112,18 +114,8 @@ export default class Wishlist extends Component {
                   borderRadius: 20,
                 }}>
 
-                <TouchableOpacity onPress={() => this.props.onPress({...item})}>
-                  <Image
-                    source={{uri: item.image}}
-                    style={{
-                      width: 150,
-                      height: 190,
-                      borderRadius: 20,
-                      backgroundColor: 'violet'
-                    }}
-                  />
-                </TouchableOpacity>
-
+              
+              
                 <Text
                   style={{
                     alignContent: 'space-between',
@@ -141,18 +133,17 @@ export default class Wishlist extends Component {
                 <Text
                   style={{
                     fontSize: 15,
-                    marginTop: 35,
-                    paddingTop: 5,
+                  textAlign:'center',
                     marginLeft: -150,
                     width: 150,
+                    color:'green'
                   }}>
                   {item.name}
                 </Text>
                 
                 <Text 
                   style={{
-                    marginTop: 100,
-                    marginLeft: -150,
+                  textAlign:'center',
                     backgroundColor: 'green',
                     color: 'white',
                     borderRadius: 12,
@@ -177,8 +168,11 @@ export default class Wishlist extends Component {
                   {item.genre}
                 </Text> */}
               </View>
+              
             );
           })}
+            {/* </TouchableOpacity> */}
+
           {/* </Container> */}
         </ScrollView>
       </View>
