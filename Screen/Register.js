@@ -5,6 +5,7 @@ import {Item, Button, Input, Icon, Label} from 'native-base'
 import axios from 'axios'
 
 export default class Register extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -65,18 +66,21 @@ render(){
               <Label style={{color: '#059dab'}}>Fullname</Label>
               <Input
               autoCapitalize='none'
+              returnKeyType="next"
               onChangeText={fullname => this.setState({fullname: fullname})} />
             </Item>
             <Item floatingLabel style={styles.form}>
               <Label style={{color: '#059dab'}}>Username</Label>
               <Input
               autoCapitalize='none'
+              returnKeyType="next"
               onChangeText={username => this.setState({username: username})} />
             </Item>
             <Item floatingLabel style={styles.form}>
               <Label style={{color: '#059dab'}}>Email</Label>
               <Input
               autoCapitalize='none'
+              returnKeyType="next"
               onChangeText={email => this.setState({email: email})} />
             </Item>
             <Item floatingLabel style={styles.form}>
@@ -84,6 +88,7 @@ render(){
               <Input 
               secureTextEntry
               autoCapitalize='none'
+              returnKeyType="go"
               onChangeText={password => this.setState({password: password})}/>
               <Button transparent onPress={() => hideUnhide()}>
 	
@@ -92,7 +97,7 @@ render(){
             </View>
             </KeyboardAvoidingView>
            
-            <TouchableOpacity onPress={this.registerUser.bind(this)}>
+            <TouchableOpacity onPress={this.insertUser.bind(this)}>
 				<Button rounded style={styles.buttonlogin}>
 					<Text style={{ fontSize: 18, color: 'white' }}>SIGN UP</Text>
 				</Button>

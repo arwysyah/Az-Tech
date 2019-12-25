@@ -24,6 +24,8 @@ export default class Login extends Component {
       };
     }
     async componentDidMount() {
+        data = await AsyncStorage.getItem('jwt')
+        console.log('ini data', data)
       try {
         if (await AsyncStorage.getItem('jwt')) {
           this.props.navigation.navigate('App');
@@ -47,20 +49,22 @@ export default class Login extends Component {
           console.log(
             'ini res, response,token',
             res,
-            res.data.message,
-            res.data.succes,
+            // res.data.message,
+            // res.data.succes,
             res.data.token,
+            // res.data.data.token
+            
           );
-  
-          if (res.data.succes) {
+          
+            // console.log('res', res.data.data.token)
+          if (res.data.status ==200) {
             AsyncStorage.setItem('jwt', res.data.token);
-            this.setState({
-              loginKey: true,
-            })(ToastAndroid.show('Login Success', ToastAndroid.SHORT));
+            //  console.log('jwkkkt', data)
+           (ToastAndroid.show('Login Success', ToastAndroid.SHORT));
           } else {
             ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
           }
-          // console.log('async',AsyncStorage)
+          
         })
         .catch(err => {
           console.log(err);
@@ -72,10 +76,12 @@ export default class Login extends Component {
     }
   render() {
     if (this.state.loginKey) {
+        console.log(this.state.loginKey,'username')
         return this.props.navigation.navigate('Home');
     }
     return (
-      <KeyboardAvoidingView behavior="padding" enabled>
+    //   <KeyboardAvoidingView behavior="padding" enabled>
+    <>
         <SliderBox
           images={this.state.Image}
           sliderBoxHeight={300}
@@ -102,6 +108,7 @@ export default class Login extends Component {
               <Label style={{color: '#059dab'}}>Username</Label>
               <Input
                 autoCapitalize="none"
+                returnKeyType="next"
                 onChangeText={username => this.setState({username})}
               />
             </Item>
@@ -113,6 +120,7 @@ export default class Login extends Component {
               <Input
                 secureTextEntry
                 autoCapitalize="none"
+                returnKeyType="go"
                 onChangeText={password => this.setState({password})}
               />
             </Item>
@@ -121,7 +129,6 @@ export default class Login extends Component {
           <TouchableOpacity onPress={this.loginUser.bind(this)}>
             <Button
               rounded
-              
               style={styles.buttonlogin}>
               <Text style={{fontSize: 18, color: 'white'}}>SIGN IN</Text>
             </Button>
@@ -135,7 +142,8 @@ export default class Login extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+        </>
+      
     );
   }
 }
