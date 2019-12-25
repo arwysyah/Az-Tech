@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -10,15 +10,8 @@ import History from './Screen/History'
 import {Icon} from 'native-base'
 import Wishlists from './Screen/Wishlist'
 import Profile from './Screen/Profile'
-
-const AppStack= createStackNavigator({
-  Home :{
-    screen:Home,
-    navigationOptions: {
-      header: null
-    }
-  }
-})
+import Detail from './Screen/Detail'
+import SplashScreen from './Screen/SplashScreen'
 
 
 const AuthStack = createStackNavigator({
@@ -40,6 +33,23 @@ const AuthStack = createStackNavigator({
 });
 
 
+const AppStack= createStackNavigator({
+  Home :{
+    screen:Home,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Detail :{
+    screen:Detail,
+    navigationOptions: {
+      header: null
+    }
+  }
+})
+
+
+
 const BottomNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -49,7 +59,7 @@ const BottomNavigator = createBottomTabNavigator(
         tabBarIcon: ({tintColor}) => (
           <Icon
             type="Ionicons"
-            name="ios-home"
+            name="home"
             style={{color: tintColor, fontSize: 30}}
           />
         ),
@@ -112,30 +122,52 @@ const BottomNavigator = createBottomTabNavigator(
 },
   {
     tabBarOptions: {
-      activeTintColor: 'tomato',
+      activeTintColor: '#059dab',
       inactiveTintColor: '#757575',
       style: {
         backgroundColor: 'white',
         borderTopWidth: 0,
         shadowOffset: {width: 5, height: 3},
         shadowColor: 'black',
-        shadowOpacity: 0.5,
+        shadowOpacity: 1,
         elevation: 5,
       },
     },
   },
 )
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      // Splashscreen: SplashScreen,
-      // AuthLoading: Authloadingscreen,
-      App: BottomNavigator,
-      Auth: AuthStack,
-    },
-    {
-      initialRouteName: 'App',
-      headerMode: 'none',
-    },
-  ),
-);
+const switchScreen=createSwitchNavigator({
+  SplashScreen :SplashScreen,
+  Auth : AuthStack,
+  App :BottomNavigator
+
+}
+
+)
+// export default createAppContainer(
+//   createSwitchNavigator(
+//     {
+//       // Splashscreen: SplashScreen,
+//       // AuthLoading: Authloadingscreen,
+//       Auth: AuthStack,
+//       App: BottomNavigator,
+      
+//     },
+//     {
+//       initialRouteName: 'Auth',
+//       headerMode: 'none',
+//     },
+//   ),
+// );
+
+const SwitchScreen = createAppContainer(switchScreen)
+
+class App extends Component{
+  render(){
+    return(
+      <View>
+      < SwitchScreen />
+      </View>
+    )
+  }
+}
+export default SwitchScreen
