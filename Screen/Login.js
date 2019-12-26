@@ -42,7 +42,20 @@ export default class Login extends Component {
         username: this.state.username,
         password: this.state.password,
       };
-  
+      if (formData.username.length < 4){
+        ToastAndroid.show(
+          `Username can't be empty`,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
+      } else if (formData.password.length < 4)
+        {
+        ToastAndroid.show(
+          `Password can't be empty`,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER
+        )
+      } else {
       axios
         .post(`https://onestopapi.herokuapp.com/login`, formData)
         .then(res => {
@@ -57,23 +70,29 @@ export default class Login extends Component {
           );
           
             // console.log('res', res.data.data.token)
-          if (res.data.status ==200) {
+          if (res.data.status == 200) {
             AsyncStorage.setItem('jwt', res.data.token);
             //  console.log('jwkkkt', data)
            (ToastAndroid.show('Login Success', ToastAndroid.SHORT));
           } else {
             ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
           }
+          this.props.navigation.navigate('Home');
+          
           
         })
         .catch(err => {
-          console.log(err);
+          console.log('ini error',err.response.data.message);
+          ToastAndroid.show(err.response.data.message, ToastAndroid.LONG)
+        
+        
         });
+
   
       console.log(formData)
-      this.props.navigation.navigate('Home');
+     
       //fungsi login disini
-    }
+    }}
   render() {
     if (this.state.loginKey) {
         console.log(this.state.loginKey,'username')

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {View,Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ToastAndroid} from  'react-native'
 import {SliderBox} from 'react-native-image-slider-box'
-import {Item, Button, Input, Icon, Label} from 'native-base'
+import {Item, Button, Input, Icon, Label, Toast} from 'native-base'
 import axios from 'axios'
 
 export default class Register extends Component {
@@ -24,6 +24,40 @@ export default class Register extends Component {
       username: this.state.username,
       fullname: this.state.fullname
     };
+    if (formData.fullname.length < 4){
+      ToastAndroid.show(
+        `Fullname can't be empty`,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    } else if (formData.username.length < 4 ){
+      ToastAndroid.show(
+        `Username can't be empty`,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    } else if (formData.email.length < 4 ){
+      ToastAndroid.show(
+        `Email can't be empty`,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    } else if (formData.password.length < 4 ){
+      ToastAndroid.show(
+        `Password can't be empty`,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    
+    } else if (result.status === 400){
+      ToastAndroid.show(
+        `User Already Exist`,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
+    
+
+    } else {
 
     axios.post('https://onestopapi.herokuapp.com/register', formData)
     .then(res => {
@@ -38,7 +72,8 @@ export default class Register extends Component {
       .catch(error=>{
           console.log(error)
       })
-  }
+
+  }}
 render(){
     
  return(
@@ -97,7 +132,7 @@ render(){
             </View>
             </KeyboardAvoidingView>
            
-            <TouchableOpacity onPress={this.insertUser.bind(this)}>
+            <TouchableOpacity onPress={this.registerUser.bind(this)}>
 				<Button rounded style={styles.buttonlogin}>
 					<Text style={{ fontSize: 18, color: 'white' }}>SIGN UP</Text>
 				</Button>
