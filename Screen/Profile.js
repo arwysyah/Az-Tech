@@ -15,40 +15,56 @@ export default class Profile extends Component{
             email: '',
             password: '',
             isToken:false,
-            id_user:166001
+            id_user:166001,
+            user:[]
         }
     }
-   handleSave=async()=>{
-    let data = await AsyncStorage.getItem('jwt');
-    console.log('test', decode(data));
-    console.log('ini data', data)
-    let profile = decode(data);
-    id=profile.id
-    console.log(id,'profile')
-let formData={
-      username: this.state.username,
-      password: this.state.password,
-      fullname:this.state.fullname,
-      email:this.state.email
-    }
-     console.log('f',formData)
-     axios.patch(`https://onestopapi.herokuapp.com/user/update/${id}`,formData).then(res=>{
-       console.log('res adlah',res.data.response)
-     })
-    }
+
+getUser=async()=>{
+  let data = await AsyncStorage.getItem('jwt');
+  console.log('test', decode(data));
+  console.log('ini data', data)
+  let profile = decode(data);
+  let id=profile.id
+  console.log(id,'iu')
+  axios.get(`https://onestopapi.herokuapp.com/user/${id}`).then(res=>{
+    this.setState({user:res.data.response[0]})
+    console.log('ress',res)
+  })
+}
+
+//    handleSave=async()=>{
+//     let data = await AsyncStorage.getItem('jwt');
+//     console.log('test', decode(data));
+//     console.log('ini data', data)
+//     let profile = decode(data);
+//     let id=profile.id
+//     console.log(id,'profile')
+// let formData={
+//       username: this.state.username,
+//       password: this.state.password,
+//       fullname:this.state.fullname,
+//       email:this.state.email
+//     }
+//      console.log('f',formData)
+//      axios.patch(`https://onestopapi.herokuapp.com/user/update/${id}`,formData).then(res=>{
+//        console.log('res adlah',res.data.response)
+//      })
+//     }
     async componentDidMount() {
-      await this.handleEdit
-        let data = await AsyncStorage.getItem('jwt');
-        console.log('test', decode(data));
-        console.log('ini data', data)
-        let profile = decode(data);
-        console.log(profile,'profile')
-        this.setState({
-          username: profile.username,
-          password: profile.password,
-          fullname:profile.fullname,
-          email:profile.email
-        });
+
+      await this.getUser()
+        // let data = await AsyncStorage.getItem('jwt');
+        // console.log('test', decode(data));
+        // console.log('ini data', data)
+        // let profile = decode(data);
+        // console.log(profile,'profile')
+        // this.setState({
+        //   username: profile.username,
+        //   password: profile.password,
+        //   fullname:profile.fullname,
+        //   email:profile.email
+        // });
      console.log(this.state.username,'user')
       }
       async deleteToken  (){
@@ -99,7 +115,7 @@ handleChange = key => val => {
 
 
     render(){
-     const {username,email,fullname} = this.state
+   
         return(
           
             <ScrollView
@@ -135,21 +151,21 @@ handleChange = key => val => {
             <Item inlineLabel style={styles.form}>
         <Label> username</Label>
               <Input 
-              value={username}
+              value={this.state.user.username}
               returnKeyType="next"
               onChangeText={this.handleChange('username')}/>
             </Item>
             <Item inlineLabel last style={styles.form}>
         <Label>fullname</Label>
               <Input 
-              value={this.state.fullname}
+              value={this.state.user.fullname}
               onChangeText={ this.handleChange('fullname')}
               returnKeyType="next" />
             </Item>
             <Item inlineLabel style={styles.form}>
               <Label>Email</Label>
               <Input
-              value={email}
+              value={this.state.user.email}
               onChangeText={ this.handleChange('email')}
               returnKeyType="next" />
             </Item>
@@ -161,12 +177,12 @@ handleChange = key => val => {
             </Item>
             </View>
 
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')}>
             <Button
-            onPress={()=>this.handleSave()}
+            // onPress={()=>this.handleSave()}
               rounded
               style={styles.buttonlogin}>
-              <Text style={{fontSize: 18, color: 'white'}}>SAVE</Text>
+              <Text style={{fontSize: 18, color: 'white'}}>Edit</Text>
             </Button>
           </TouchableOpacity>
             </View>

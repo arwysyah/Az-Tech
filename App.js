@@ -17,6 +17,7 @@ import DetailList from './Screen/DetailList'
 import Search from './Screen/Search'
 import Test from './Screen/test'
 import Chatbot from './Screen/ChatBot'
+import EditProfile from './Screen/editProfile'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -66,7 +67,7 @@ const AppStack= createStackNavigator({
      
       header: null,
      
-    }
+    },
   
 },
 
@@ -86,6 +87,12 @@ const HistoryNavigation = createStackNavigator({
   headerMode: 'none'
 })
 
+const ProfileNavigation = createStackNavigator({
+  Profile,
+  EditProfile
+},{
+  headerMode:'none'
+})
 
 
 const BottomNavigator = createBottomTabNavigator(
@@ -131,7 +138,7 @@ const BottomNavigator = createBottomTabNavigator(
     },
   },
   Profile: {
-    screen: Profile,
+    screen: ProfileNavigation,
     navigationOptions: {
       tabBarLabel: 'Profile',
       tabBarIcon: ({tintColor}) => (

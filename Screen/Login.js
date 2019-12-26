@@ -24,7 +24,7 @@ export default class Login extends Component {
       };
     }
     async componentDidMount() {
-        data = await AsyncStorage.getItem('jwt')
+        let data = await AsyncStorage.getItem('jwt')
         console.log('ini data', data)
       try {
         if (await AsyncStorage.getItem('jwt')) {
@@ -33,18 +33,18 @@ export default class Login extends Component {
           this.props.navigation.navigate('AuthScreen');
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     }
   
-    loginUser() {
+     loginUser=()=> {
       const formData = {
         username: this.state.username,
         password: this.state.password,
       };
   
       axios
-        .post(`https://onestopapi.herokuapp.com/login`, formData)
+        .post(`https://onestopapi.herokuapp.com/login`,formData)
         .then(res => {
           console.log(
             'ini res, response,token',
@@ -128,7 +128,7 @@ export default class Login extends Component {
             </Item>
           </View>
 
-          <TouchableOpacity onPress={this.loginUser.bind(this)}>
+          <TouchableOpacity onPress={this.loginUser()}>
             <Button
               rounded
               style={styles.buttonlogin}>
