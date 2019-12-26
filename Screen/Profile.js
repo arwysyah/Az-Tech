@@ -32,29 +32,56 @@ export default class Profile extends Component {
 
     }
   }
-  handleChange = (name, value) => {
-    let newFormData = {...this.state.formData}
-    newFormData[name] = value
-    this.setState({
-      formData: newFormData
-    })
-  }
-  onTypeChange(value){
-    let newFormData={...this.state.formData}
-    newFormData.type=value
-  this.setState({
-    formData: newFormData
-  });
-  }
-  handleChoosePhoto(){
-    ImagePicker.openPicker({
-        multiple: false
-      }).then(images => {
-        let newFormData={...this.state.formData}
-        newFormData.photos=images
-        this.setState({formData:newFormData})
-      });
-  }
+ handleChange () {
+ const formData = {
+  email: this.state.email,
+  password: this.state.password,
+  username: this.state.username,
+  fullname: this.state.fullname
+};
+if (formData.fullname.length < 4){
+  ToastAndroid.show(
+    `Fullname can't be empty`,
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
+} else if (formData.username.length < 4 ){
+  ToastAndroid.show(
+    `Username can't be empty`,
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
+} else if (formData.email.length < 4 ){
+  ToastAndroid.show(
+    `Email can't be empty`,
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
+} else if (formData.password.length < 4 ){
+  ToastAndroid.show(
+    `Password can't be empty`,
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
+} else {
+
+axios.patch('https://onestopapi.herokuapp.com/user/update/', formData)
+.then(res => {
+  console.log(
+    'ini res, response,token',
+    res,
+    res.data.message,
+    res.data.succes,
+    );ToastAndroid.show("Update succes",ToastAndroid.SHORT)
+    // this.props.navigation.navigate('Login')
+  })
+  .catch(err=>{
+      console.log(err.response.data.message);
+      ToastAndroid.show(err.response.data.message, ToastAndroid.LONG)
+  })
+
+}}
+  
 
   async componentDidMount() {
     let data = await AsyncStorage.getItem('jwt');
@@ -98,8 +125,7 @@ export default class Profile extends Component {
   }
 
   render() {
-    const {isLoading, formData} = this.state
-    let image=formData.photos
+
     return (
       <ScrollView
         showsHorizontalScrollIndicator={false}
@@ -116,8 +142,12 @@ export default class Profile extends Component {
                 Profile
               </Text>
             </Button>
+            <Button transparent onPress={() => this.deleteToken()}>
+              <Icon type="FontAwesome"
+              name="sign-out"
+              style={{color: 'black', fontSize: 25, marginTop: 50, marginLeft: 250}}/>
+            </Button>
           </View>
-          {/* <Image source={require('../Assets/profilebackground.png')} style={{width: 100, height: 100,resizeMode:'contain'}}/> */}
           <View style={{alignSelf: 'center'}}>
             <View style={styles.profileImage}>
               <Image
@@ -125,9 +155,9 @@ export default class Profile extends Component {
                 style={styles.image}></Image>
             </View>
             <Text style={styles.textname}>{this.state.username}</Text>
-            <TouchableOpacity onPress={() => this.deleteToken()}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('History')}>
               <Button rounded style={styles.edit}>
-                <Text style={{fontSize: 16, color: 'black'}}>Logout</Text>
+                <Text style={{fontSize: 16, color: 'black'}}>History</Text>
               </Button>
             </TouchableOpacity>
           </View>
