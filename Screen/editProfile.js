@@ -44,7 +44,9 @@ export default class EditProfile extends Component {
       .patch(`https://onestopapi.herokuapp.com/user/update/${id}`, formData)
       .then(res => {
         console.log('res adlah', res.data.response);
-      }).then(T);
+       
+      }).then( ToastAndroid.show('invalid password', ToastAndroid.SHORT));
+      
   };
   async componentDidMount() {
     await this.handleEdit;
@@ -150,7 +152,7 @@ export default class EditProfile extends Component {
               <Item inlineLabel style={styles.form}>
                 <Label> username</Label>
                 <Input
-                  value={this.state.username}
+                 
                   returnKeyType="next"
                   onChangeText={this.handleChange('username')}
                 />
@@ -158,7 +160,7 @@ export default class EditProfile extends Component {
               <Item inlineLabel last style={styles.form}>
                 <Label>fullname</Label>
                 <Input
-                  value={this.state.fullname}
+                  
                   onChangeText={this.handleChange('fullname')}
                   returnKeyType="next"
                 />
@@ -166,7 +168,7 @@ export default class EditProfile extends Component {
               <Item inlineLabel style={styles.form}>
                 <Label>Email</Label>
                 <Input
-                  value={this.state.email}
+                 
                   onChangeText={this.handleChange('email')}
                   returnKeyType="next"
                 />
