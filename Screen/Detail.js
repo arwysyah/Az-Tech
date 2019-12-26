@@ -28,14 +28,27 @@ export default class Detail extends Component {
   state = {
     order: 5,
     id_user: 166004,
+    part:[]
   };
 
   async componentDidMount() {
+    await this.getDetail()
     const userToken = await AsyncStorage.getItem('jwt');
     const user = await decode(userToken);
     userId = user.id;
-    console.log(userId, 'user');
+    // console.log(userId, 'user');
     let part = this.props.navigation.getParam('part');
+  }
+
+  getDetail=()=>{
+    let part =this.props.navigation.getParam('part')
+id_partner=part.id_partner
+    Axios.get(`https://onestopapi.herokuapp.com/partner/${id_partner}`).then(res=>{
+     this.setState({
+       part:res.data.response[0]
+     })
+    })
+    console.log('partse',part)
   }
 
   handleGetDirections = () => {
@@ -201,7 +214,7 @@ export default class Detail extends Component {
 
     return (
       <View>
-        <View style={{backgroundColor: '#F2F1F1'}}>
+        <View style={{backgroundColor: '#059dab'}}>
           <View>
             <View style={{backgroundColor: 'white'}}>
               <Button
@@ -266,21 +279,38 @@ export default class Detail extends Component {
                     this.handleSubmit();
                   }}
                   style={styles.button}>
-                  <Text style={{left: 5}}>
-                    <Icon type="MaterialIcons" name="payment" />
+                  <Text style={{left: 1, top: 2 }}>
+                    <Icon style={{fontSize: 50, }} type="MaterialIcons" name="payment" />
                   </Text>
                 </TouchableOpacity>
+                
                 <View>
+                  <Text style={{fontSize:20, }}>Description:</Text>
                   <Text>{part.description}</Text>
                 </View>
               </View>
             </View>
-            <View style={{justifyContent:'center',top:-20,left:120}}> 
+           
+            <View style={{justifyContent:'center',top:-20,left:150}}> 
               <TouchableOpacity style={styles.button1} onPress={this.handleGetDirections}>
                
-                  <Text>Get The Location</Text>
+                  <Text>Get Store Location</Text>
                 
               </TouchableOpacity>
+            </View>
+            <View>
+            <TouchableOpacity
+                  onPress={()=>{this.props.navigation.navigate('Chatbot')}
+                    
+                  }
+                  style={styles.chat}>
+                  <Text style={{left: 4, top: 3 }}>
+                    <Icon style={{fontSize: 50, }} type="MaterialIcons" name="chat" />
+                    
+                  
+                    
+                  </Text>
+                </TouchableOpacity>
             </View>
             <View style={{height: 500, marginHorizontal: 20}}>
               <MapView
@@ -317,7 +347,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 23,
     alignContent: 'center',
-    left: -140,
+    marginRight: 300,
     fontWeight: 'bold',
   },
   card: {
@@ -325,7 +355,7 @@ const styles = StyleSheet.create({
     width: 240,
     backgroundColor: 'black',
     top: 40,
-    left: 40,
+    left: 65,
     borderRadius: 10,
   },
   textinput: {
@@ -354,14 +384,24 @@ const styles = StyleSheet.create({
 
     textAlign: 'center',
    
-    height: 45,
-    width: 120,
+    height: 50,
+    width: 50,
+    alignSelf: 'center',
     // shadowColor:'black',
-    backgroundColor: 'green',
+    backgroundColor: 'yellow',
     borderRadius: 10,
     // shadowOpacity:100,
     borderTopColor: 'black',
-    // shadowOffset:30
+    // shadowOffset:30,
+    marginLeft: 200
+  },
+  chat: {
+    backgroundColor: 'yellow',
+    height: 50,
+    width: 50,
+    borderRadius: 10,
+    marginLeft: 345,
+    marginTop: -160,
   },
   button1: {
     alignItems: 'center',
@@ -371,7 +411,7 @@ alignContent:'center'
     height: 30,
     width: 120,
     // shadowColor:'black',
-    backgroundColor: 'yellow',
+    backgroundColor: '#ffcd42',
     borderRadius: 5,
     // shadowOpacity:100,
     borderTopColor: 'black',

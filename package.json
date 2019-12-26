@@ -16,6 +16,7 @@
     "native-base": "^2.13.8",
     "react": "16.9.0",
     "react-native": "^0.61.5",
+    "react-native-chatbot": "0.0.1-alpha.12",
     "react-native-geolocation-service": "^3.1.0",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-google-maps-directions": "^2.1.1",
@@ -28,7 +29,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.10.3",
     "react-navigation-tabs": "^2.6.2",
-    "react-navigation-transitions": "^1.0.12"
+    "react-navigation-transitions": "^1.0.12",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "7.7.7",

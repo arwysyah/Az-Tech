@@ -1,18 +1,3 @@
-// import React, {Component} from 'react'
-// import {View,Text,Stylesheet} from 'react-native'
-
-// export default class History extends Component{
-
-//     render(){
-//         return(
-//             <View>
-//                 <Text>
-//                     History
-//                 </Text>
-//             </View>
-//         )
-//     }
-// }
 
 
 import React, {Component} from 'react';
@@ -46,16 +31,20 @@ import {
 export default class Wishlist extends Component {
   state = {
     users: [],
-    id:166001
+
   };
 
   componentDidMount() {
     this.getUsers();
   }
 
-  getUsers = () => {
+  getUsers = async() => {
+    const userToken = await AsyncStorage.getItem('jwt');
+    const user = await decode(userToken);
+    userId = user.id;
+    console.log(userId, 'user');
     axios
-      .get(`https://onestopapi.herokuapp.com/user/history/${this.state.id}`)
+      .get(`https://onestopapi.herokuapp.com/user/history/${userId}`)
       .then(res=>{
         //   console.log('res',res)
         this.setState({

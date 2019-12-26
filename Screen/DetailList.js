@@ -9,35 +9,109 @@ import {
   Alert,
   ToastAndroid,
   Dimensions,
+  RefreshControl
 } from 'react-native';
 import {Button, Icon} from 'native-base';
-
+import getDirections from 'react-native-google-maps-directions';
 import {ScrollView} from 'react-native-gesture-handler';
 import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 import RazorpayCheckout from 'react-native-razorpay';
 import Axios from 'axios';
-import decode from 'jwt-decode'
-import AsyncStorage from '@react-native-community/async-storage'
+import decode from 'jwt-decode';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export default class Detail extends Component {
+export default class DetailList extends Component {
   state = {
     order: 5,
     id_user: 166004,
-    
+    id_partner:this.props.navigation.getParam('id_partner'),
+    partner:[],
+    latitude: 0,
+    longitude: 0,
   };
 
   async componentDidMount() {
+    console.log(this.state.partner.latitude,this.state.partner.longitude,'liat')
+    await this.getDetail()
     const userToken = await AsyncStorage.getItem('jwt');
     const user = await decode(userToken);
-    userId=user.id
-    console.log(userId,'user')
-    let part = this.props.navigation.getParam('d');
+    userId = user.id;
+    console.log(userId, 'user');
+    let part = this.props.navigation.getParam('part');
   }
+   getDetail=async()=>{
+    // let part = this.props.navigation.getParam('part');
+    //         id_partner = part.id_partner;
+    //         console.log(part,'part')
+            // console.log(id_partner,'partner')
+
+    await Axios.get(`https://onestopapi.herokuapp.com/partner/${this.state.id_partner}`).then(res=>{
+      console.log('ISI data rres',res.data.response[0])
+      this.setState({
+        partner:res.data.response[0]
+      })
+      console.log('partner',this.state.partner)
+    })
+  }
+  onRefresh=async()=>{
+    await this.setState({
+refreshing:true
+    })
+   const te= this.getDetail().then(()=>{
+       this.setState({refreshing:false})
+    })
+    console.log(te,'te')
+  }
+  handleGetDirections = () => {
+    let part = this.props.navigation.getParam('part');
+    console.log(part, 'part');
+    const data = {
+      //  source: {
+      //   latitude: -33.8356372,
+      //   longitude: 18.6947617
+      // },
+      destination: {
+        latitude: this.state.partner.latitude,
+        longitude: this.state.partner.longitude,
+      },
+      params: [
+        {
+          key: 'travelmode',
+          value: 'driving',
+        },
+        {
+          key: 'dir_action',
+          value: 'navigate',
+        },
+      ],
+      //   waypoints: [
+      //     {
+      //       latitude: -33.8600025,
+      //       longitude: 18.697452,
+      //     },
+      //     {
+      //       latitude: -33.8600026,
+      //       longitude: 18.697453,
+      //     },
+      //        {
+      //       latitude: -33.8600036,
+      //       longitude: 18.697493,
+      //     },
+      //        {
+      //       latitude: -33.8600046,
+      //       longitude: 18.69743,
+      //     },
+
+      //   ]
+    };
+
+    getDirections(data);
+  };
   handleSubmit = () => {
     Alert.alert('Confirm Paid', 'Are you want to buy this voucher?', [
       {
@@ -51,17 +125,17 @@ export default class Detail extends Component {
           try {
             const userToken = await AsyncStorage.getItem('jwt');
             const user = await decode(userToken);
-            userId=user.id
-            console.log(userId,'user')
+            userId = user.id;
+            console.log(userId, 'user');
 
-            let part = this.props.navigation.getParam('d');
-            id_partner = part.id_partner;
-            console.log(part.id_partner, 'part id');
-            console.log(id_partner, 'id');
-            // console.log('data',data.id,idBook) //navigator
+            // let part = this.props.navigation.getParam('part');
+            // id_partner = part.id_partner;
+            // console.log(part.id_partner, 'part id');
+            // console.log(id_partner, 'id');
+          
             let formData = {
               id_user: userId,
-              id_partner: id_partner,
+              id_partner: this.state.id_partner,
             };
 
             console.log('tipe', formData);
@@ -70,7 +144,7 @@ export default class Detail extends Component {
               formData,
             ).then(async () => {
               await Axios.patch(
-                `https://onestopapi.herokuapp.com/partner/${id_partner}`,
+                `https://onestopapi.herokuapp.com/partner/${this.state.id_partner}`,
               ).then(async () => {
                 var options = {
                   description: 'Credits towards consultation',
@@ -92,29 +166,28 @@ export default class Detail extends Component {
                     alert(`Success: ${data.razorpay_payment_id}`);
                   })
                   .then(async () => {
-                    let data =await  AsyncStorage.getItem('jwt');
-               
+                    let data = await AsyncStorage.getItem('jwt');
+
                     const userToken = await AsyncStorage.getItem('jwt');
                     const user = await decode(userToken);
-                    userId=user.id
+                    userId = user.id;
                     console.log('user id', user.id);
-                    // console.log('resu',user.result) //ini penting
-                    let part = this.props.navigation.getParam('d');
-                  let id_partner = part.id_partner;
+                  
+                    // let part = this.props.navigation.getParam('part');
+                    // let id_partner = part.id_partner;
                     id_user = userId;
-                    // console.log('data',data.id,idBook) //navigator
+                  const id_partner=this.state
                     let formData = {
                       id_user: id_user,
-                      id_partner: id_partner,
+                      id_partner: this.state.id_partner,
                     };
                     console.log('user', id_user);
                     console.log('id_patner', id_partner);
-                    console.log('forms', formData);
+                    console.log('ssssss', formData);
                     // console.log(id_user,id_room, 'data')
                     // console.log('tipe', typeof formData);
                     await Axios.post(
-                      'http://onestopapi.herokuapp.com/user/voucher',
-                      formData,
+                      'http://onestopapi.herokuapp.com/user/voucher',formData,
                     );
                     console.log(formData, 'fo');
                     console.log('succes');
@@ -127,7 +200,7 @@ export default class Detail extends Component {
                   });
               });
             });
-            console.log(part.id_partner);
+            // console.log(part.id_partner);
             console.log('succes');
             ToastAndroid.show('Success Paid Your Coupon', ToastAndroid.SHORT);
           } catch (error) {
@@ -151,12 +224,20 @@ export default class Detail extends Component {
       });
     }
   };
+  
   render() {
-    const part = this.props.navigation.getParam('d');
-
+ console.log(this.state.partner,'partnerrrssr')
+const {partner}=this.state
+console.log(this.state.partner.latitude,'lat')
+console.log(this.state.partner.longitude,'long')
     return (
       <View>
-        <View style={{backgroundColor: '#F2F1F1'}}>
+        {/* <Text>
+          hello
+          {this.state.partner.location}
+        </Text> */}
+        <View style={{backgroundColor: '#F2F1F1'}}
+         >
           <View>
             <View style={{backgroundColor: 'white'}}>
               <Button
@@ -165,11 +246,13 @@ export default class Detail extends Component {
                   this.props.navigation.goBack();
                 }}>
                 <Icon style={{color: 'black'}} name="arrow-back" />
-                <Text style={styles.header}>Detail</Text>
+                <Text style={styles.header}>DetailList</Text>
               </Button>
             </View>
           </View>
-          <ScrollView>
+          <ScrollView
+          // 
+          >
             <View
               style={{
                 height: 270,
@@ -180,7 +263,7 @@ export default class Detail extends Component {
               }}>
               <View style={styles.card}>
                 <Image
-                  source={{uri: d.image}}
+                  source={{uri: partner.image}}
                   style={{height: 160, width: 240, borderRadius: 10}}
                 />
 
@@ -191,7 +274,7 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  {d.name}
+                  {partner.name}
                 </Text>
                 <Text
                   style={{
@@ -200,7 +283,7 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  {d.stock}
+                  Stock : {partner.stock}
                 </Text>
                 <Text
                   style={{
@@ -209,56 +292,13 @@ export default class Detail extends Component {
                     fontSize: 18,
                     top: 4,
                   }}>
-                  {d.location}
+                  {partner.location}
                 </Text>
               </View>
-              <View style={{flexDirection: 'row', top: 110}}>
-                {/* <TouchableOpacity>
-              <Icon
-                type="Feather"
-                name="minus-circle"
-                style={{left: 48, top: 5}}
-              />
-            </TouchableOpacity> */}
-                {/* <View style={styles.box}>
-                  <Text style={{textAlign: 'center', fontSize: 30}}>
-                    {this.state.order}
-                  </Text>
-                </View> */}
-
-                {/* <Icon
-              type="Feather"
-              name="plus-circle"
-              size={28}
-              style={{left: 90, top: 5}}
-            /> */}
-              </View>
-              {/* <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.handleMinus();
-                  }}>
-                  <Icon
-                    type="Feather"
-                    name="minus-circle"
-                    style={{left: 48, top: 10}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    // this.handlePlus();
-                    this.handleSubmit();
-                  }}>
-                  <Icon
-                    type="Feather"
-                    name="plus-circle"
-                    style={{left: 48, top: 30}}
-                  />
-                </TouchableOpacity>
-              </View> */}
+              <View style={{flexDirection: 'row', top: 110}}></View>
             </View>
-            <View style={{height: 600}}>
-              <View style={{marginHorizontal:20, top: 40}}>
+            <View style={{height: 200}}>
+              <View style={{marginHorizontal: 20, top: 40}}>
                 <TouchableOpacity
                   onPress={() => {
                     this.handleSubmit();
@@ -269,56 +309,43 @@ export default class Detail extends Component {
                   </Text>
                 </TouchableOpacity>
                 <View>
-                  <Text>
-                    Description is something that gets in the way of many
-                    authors. Why? Well, because it's so darn hard to write. And
-                    no wonder. If you're not careful, descriptive sequences can
-                    become static, even dull. Writing action and dialogue is so
-                    much more fun. On top of that, description incorporates so
-                    many elements. It doesn't just cover describing the setting
-                    -- it also involves descriptions of the characters' clothes
-                    and appearance, the "props" your characters use, the
-                    weather, and so forth. If you're not very accomplished at
-                    writing description, then sometimes you might want to avoid
-                    writing it. But then, you can wind up with stories where
-                    people wander vague hallways or buildings, and readers don't
-                    get a sense of time or place from your story. A story
-                    without enough description is missing something. People who
-                    read a story that's lacking in description might ask "Where
-                    does this take place? Are there buildings around them?" I
-                    must admit that often happens when people look at my early
-                    drafts.
-                  </Text>
+                  <Text>{partner.description}</Text>
                 </View>
               </View>
             </View>
-
-            <View style={{height: 500,marginHorizontal:20}}>
-            <MapView
-              style={styles.map}
-              provider={PROVIDER_GOOGLE}
-              region={{
-                latitude: Number(part.latitude),
-                longitude: Number(part.longitude),
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-              }}>
-              <Marker
-                coordinate={{
-                  latitude: Number(part.latitude),
-                  longitude: Number(part.longitude),
-                }}
-                title={part.name}>
-                <Callout style={{height: 120}}>
-                  <Text>{part.location}</Text>
-                  <Text>{part.name}</Text>
-                  <Image style={styles.imaps} source={{uri: part.image}} />
-                </Callout>
-              </Marker>
-            </MapView>
-            
-          </View>
+            <View style={{justifyContent:'center',top:-20,left:120}}> 
+              <TouchableOpacity style={styles.button1} onPress={this.handleGetDirections}>
+               
+                  <Text>Get The Location</Text>
+                
+              </TouchableOpacity>
+            </View>
+            <View style={{height: 500, marginHorizontal: 20}}>
+              <MapView
+                style={styles.map}
+                provider={PROVIDER_GOOGLE}
+                region={{
+                  latitude: this.state.partner.latitude ,
+                  longitude: this.state.partner.longitude,
+                  latitudeDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA,
+                }}>
+                <Marker
+                  coordinate={{
+                    latitude: this.state.partner.latitude,
+                    longitude: this.state.partner.longitude,
+                  }}
+                  title={partner.name}>
+                  <Callout style={{height: 120}}>
+                    <Text>{partner.location}</Text>
+                    <Text>{partner.name}</Text>
+                    <Image style={styles.imaps} source={{uri: partner.image}} />
+                  </Callout>
+                </Marker>
+              </MapView>
+            </View>
           </ScrollView>
+          
         </View>
       </View>
     );
@@ -365,12 +392,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     textAlign: 'center',
-    justifyContent: 'center',
+   
     height: 45,
     width: 120,
     // shadowColor:'black',
     backgroundColor: 'green',
     borderRadius: 10,
+    // shadowOpacity:100,
+    borderTopColor: 'black',
+    // shadowOffset:30
+  },
+  button1: {
+    alignItems: 'center',
+alignContent:'center'
+,    textAlign: 'center',
+    justifyContent: 'center',
+    height: 30,
+    width: 120,
+    // shadowColor:'black',
+    backgroundColor: 'yellow',
+    borderRadius: 5,
     // shadowOpacity:100,
     borderTopColor: 'black',
     // shadowOffset:30

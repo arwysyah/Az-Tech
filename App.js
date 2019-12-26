@@ -16,6 +16,7 @@ import Voucher from './Screen/Voucher'
 import DetailList from './Screen/DetailList'
 import Search from './Screen/Search'
 import Test from './Screen/test'
+import Chatbot from './Screen/ChatBot'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -49,12 +50,16 @@ const AppStack= createStackNavigator({
       header: null
     }
   },
-  DetailList :{
-    screen:DetailList,
+  Chatbot: {
+    screen: Chatbot,
     navigationOptions: {
-      header: null
+     
+      header: null,
+      tabBarOptions:null
+     
     }
   },
+ 
   Search: {
     screen: Search,
     navigationOptions: {
@@ -67,6 +72,12 @@ const AppStack= createStackNavigator({
 
 })
 
+const DetailNavigation=createStackNavigator({
+  Detail,
+  Chatbot
+},{
+  headerMode:'none'
+})
 
 const HistoryNavigation = createStackNavigator({
   History,
