@@ -48,15 +48,6 @@ export default class Register extends Component {
         ToastAndroid.LONG,
         ToastAndroid.CENTER,
       );
-    
-    } else if (result.status === 400){
-      ToastAndroid.show(
-        `User Already Exist`,
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-      );
-    
-
     } else {
 
     axios.post('https://onestopapi.herokuapp.com/register', formData)
@@ -69,8 +60,9 @@ export default class Register extends Component {
         res.data.token,);ToastAndroid.show("Register succes",ToastAndroid.SHORT)
         this.props.navigation.navigate('Login')
       })
-      .catch(error=>{
-          console.log(error)
+      .catch(err=>{
+          console.log(err.response.data.message);
+          ToastAndroid.show(err.response.data.message, ToastAndroid.LONG)
       })
 
   }}
