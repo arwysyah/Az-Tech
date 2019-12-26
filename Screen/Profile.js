@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,Text,StyleSheet, Image, TouchableOpacity, Alert, ScrollView, ToastAndroid} from 'react-native'
+import {View,Text,StyleSheet, Image, TouchableOpacity, Alert, ScrollView, ToastAndroid, TextInput} from 'react-native'
 import {IonIcons, MaterialIcons} from 'react-native-vector-icons'
 import {Left, Icon, Button, Item, Label, Input, Toast} from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -13,7 +13,6 @@ export default class Profile extends Component{
             username: '',
             fullname: '',
             email: '',
-            password: '',
             user: [],
             isToken:false,
             
@@ -48,7 +47,6 @@ export default class Profile extends Component{
     console.log(id,'profile')
 let formData={
       username: this.state.username,
-      password: this.state.password,
       fullname:this.state.fullname,
       email:this.state.email
     }
@@ -66,7 +64,6 @@ let formData={
         console.log(profile,'profile')
         this.setState({
           username: profile.username,
-          password: profile.password,
           fullname:profile.fullname,
           email:profile.email
         });
@@ -102,16 +99,7 @@ let formData={
         
        
       }
-// handleSave=()=>{
-//   // console.log('hello')
-//   // console.log('usernm',this.state.username)
-//   let form = {
-//     username:this.state.username,
-//     email:this.state.email,
-//     fullname:this.state.fullname
-//   }
-//   console.log('form',form)
-// }
+
 
 handleChange = key => val => {
   this.setState({[key]: val});
@@ -119,9 +107,10 @@ handleChange = key => val => {
 };
 
 
+
     render(){
      
-     console.log(this.state.user.username, 'usernameeefixxxxxx')
+    //  console.log(this.state.user.username, 'usernameeefixxxxxx')
   
         return(
           
@@ -158,30 +147,28 @@ handleChange = key => val => {
             <Item inlineLabel style={styles.form}>
         <Label> username</Label>
               <Input 
-              value={this.state.user.name}
+              defaultValue={this.state.username}
+              name="username"
               returnKeyType="next"
               onChangeText={this.handleChange('username')}/>
             </Item>
             <Item inlineLabel last style={styles.form}>
         <Label>fullname</Label>
               <Input 
-              value={this.state.user.fullname}
+              defaultValue={this.state.fullname}
+              name='fullname'
               onChangeText={this.handleChange('fullname')}
               returnKeyType="next" />
             </Item>
             <Item inlineLabel style={styles.form}>
               <Label>Email</Label>
               <Input
-              value={this.state.user.email}
-              onChangeText={ this.handleChange('email')}
+              defaultValue={this.state.email}
+              name='email'
+              onChangeText={this.handleChange('email')}
               returnKeyType="next" />
             </Item>
-            <Item inlineLabel last style={styles.form}>
-              <Label>Password</Label>
-              <Input
-              secureTextEntry
-              returnKeyType="go" />
-            </Item>
+            
             </View>
 
             <TouchableOpacity onPress={()=>this.handleSave()}>
