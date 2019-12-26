@@ -67,7 +67,7 @@ export default class Register extends Component {
         res.data.message,
         res.data.succes,
         res.data.token,);ToastAndroid.show("Register succes",ToastAndroid.SHORT)
-    this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('Login')
       })
       .catch(error=>{
           console.log(error)

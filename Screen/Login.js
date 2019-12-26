@@ -82,7 +82,7 @@ export default class Login extends Component {
           
         })
         .catch(err => {
-          console.log('ini error',err.response.data.message);
+          console.log('ini errorr',err.response.data.message);
           ToastAndroid.show(err.response.data.message, ToastAndroid.LONG)
         
         
