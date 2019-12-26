@@ -4,7 +4,7 @@ import {IonIcons, MaterialIcons} from 'react-native-vector-icons'
 import {Left, Icon, Button, Item, Label, Input, Toast} from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
 import decode from 'jwt-decode';
-
+import axios from 'axios'
 export default class Profile extends Component{
     constructor(props){
         super(props) 
@@ -15,10 +15,29 @@ export default class Profile extends Component{
             email: '',
             password: '',
             isToken:false,
+            id_user:166001
         }
     }
-   
+   handleSave=async()=>{
+    let data = await AsyncStorage.getItem('jwt');
+    console.log('test', decode(data));
+    console.log('ini data', data)
+    let profile = decode(data);
+    id=profile.id
+    console.log(id,'profile')
+let formData={
+      username: this.state.username,
+      password: this.state.password,
+      fullname:this.state.fullname,
+      email:this.state.email
+    }
+     console.log('f',formData)
+     axios.patch(`https://onestopapi.herokuapp.com/user/update/${id}`,formData).then(res=>{
+       console.log('res adlah',res.data.response)
+     })
+    }
     async componentDidMount() {
+      await this.handleEdit
         let data = await AsyncStorage.getItem('jwt');
         console.log('test', decode(data));
         console.log('ini data', data)
@@ -62,16 +81,16 @@ export default class Profile extends Component{
         
        
       }
-handleSave=()=>{
-  // console.log('hello')
-  // console.log('usernm',this.state.username)
-  let form = {
-    username:this.state.username,
-    email:this.state.email,
-    fullname:this.state.fullname
-  }
-  console.log('form',form)
-}
+// handleSave=()=>{
+//   // console.log('hello')
+//   // console.log('usernm',this.state.username)
+//   let form = {
+//     username:this.state.username,
+//     email:this.state.email,
+//     fullname:this.state.fullname
+//   }
+//   console.log('form',form)
+// }
 
 handleChange = key => val => {
   this.setState({[key]: val});
@@ -123,7 +142,7 @@ handleChange = key => val => {
             <Item inlineLabel last style={styles.form}>
         <Label>fullname</Label>
               <Input 
-              value={fullname}
+              value={this.state.fullname}
               onChangeText={ this.handleChange('fullname')}
               returnKeyType="next" />
             </Item>
