@@ -14,7 +14,7 @@ import {Left, Icon, Button, Item, Label, Input, Toast} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import decode from 'jwt-decode';
 import axios from 'axios';
-export default class Profile extends Component {
+export default class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,99 +24,73 @@ export default class Profile extends Component {
       password: '',
       isToken: false,
       id_user: 166001,
-      user: [],
     };
   }
-
-  getUser = async () => {
+  handleSave = async () => {
     let data = await AsyncStorage.getItem('jwt');
     console.log('test', decode(data));
     console.log('ini data', data);
     let profile = decode(data);
     let id = profile.id;
-    console.log(id, 'iu');
-    axios.get(`https://onestopapi.herokuapp.com/user/${id}`).then(res => {
-      this.setState({user: res.data.response[0]});
-      console.log('ress', res);
-    });
+    console.log(id, 'profile');
+    let formData = {
+      username: this.state.username,
+      password: this.state.password,
+      fullname: this.state.fullname,
+      email: this.state.email,
+    };
+    console.log('f', formData);
+    axios
+      .patch(`https://onestopapi.herokuapp.com/user/update/${id}`, formData)
+      .then(res => {
+        console.log('res adlah', res.data.response);
+       
+      }).then( ToastAndroid.show('Profile is updated', ToastAndroid.SHORT));
+      
   };
-  onRefresh = async () => {
-    let data = await AsyncStorage.getItem('jwt');
-    console.log('test', decode(data));
-    console.log('ini data', data);
-    let profile = decode(data);
-    let id = profile.id;
-    console.log(id, 'iu');
-    axios.get(`https://onestopapi.herokuapp.com/user/${id}`).then(res => {
-      this.setState({user: res.data.response[0]});
-      console.log('ress', res);
-    });
-  };
-
-  //    handleSave=async()=>{
-  //     let data = await AsyncStorage.getItem('jwt');
-  //     console.log('test', decode(data));
-  //     console.log('ini data', data)
-  //     let profile = decode(data);
-  //     let id=profile.id
-  //     console.log(id,'profile')
-  // let formData={
-  //       username: this.state.username,
-  //       password: this.state.password,
-  //       fullname:this.state.fullname,
-  //       email:this.state.email
-  //     }
-  //      console.log('f',formData)
-  //      axios.patch(`https://onestopapi.herokuapp.com/user/update/${id}`,formData).then(res=>{
-  //        console.log('res adlah',res.data.response)
-  //      })
-  //     }
   async componentDidMount() {
-    this.onRefresh()
-    
-    await this.getUser();
-    // let data = await AsyncStorage.getItem('jwt');
-    // console.log('test', decode(data));
-    // console.log('ini data', data)
-    // let profile = decode(data);
-    // console.log(profile,'profile')
-    // this.setState({
-    //   username: profile.username,
-    //   password: profile.password,
-    //   fullname:profile.fullname,
-    //   email:profile.email
-    // });
+    await this.handleEdit;
+    let data = await AsyncStorage.getItem('jwt');
+    console.log('test', decode(data));
+    console.log('ini data', data);
+    let profile = decode(data);
+    console.log(profile, 'profile');
+    this.setState({
+      username: profile.username,
+      password: profile.password,
+      fullname: profile.fullname,
+      email: profile.email,
+    });
     console.log(this.state.username, 'user');
   }
-  //   async deleteToken  (){
-  //     Alert.alert(
-  //       'Logout',
-  //       'Are You Sure Want to Logout?',
-  //       [
+  async deleteToken() {
+    Alert.alert(
+      'Logout',
+      'Are You Sure Want to Logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem('jwt');
+              this.props.navigation.navigate('Login');
+            } catch (err) {
+              console.log(`The error is: ${err}`);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
 
-  //         {
-  //           text: 'Cancel',
-  //           onPress: () => console.log('Cancel Pressed'),
-  //           style: 'cancel',
-  //         },
-  //         {text: 'OK', onPress: async() => {
-  //           try {
-
-  //             await AsyncStorage.removeItem('jwt')
-  //             this.props.navigation.navigate('Login')
-  //           } catch (err) {
-  //             console.log(`The error is: ${err}`)
-  //           }
-
-  //         }},
-  //       ],
-  //       {cancelable: false},
-  //     )
-
-  //     let token = AsyncStorage.jwt
-  // console.log('local',AsyncStorage,token)
-
-  //   }
+    let token = AsyncStorage.jwt;
+    console.log('local', AsyncStorage, token);
+  }
   // handleSave=()=>{
   //   // console.log('hello')
   //   // console.log('usernm',this.state.username)
@@ -139,24 +113,24 @@ export default class Profile extends Component {
         showsHorizontalScrollIndicator={false}
         style={{horizontal: 'true', flex: 1}}>
         <View style={{flex: 1, backgroundColor: '#F2F1F1'}}>
-        <TouchableOpacity onPress={() => this.onRefresh()}>
-            
-            <Icon style={{color: 'black', left: 360, top: 40}} name="refresh" />
-        
-        </TouchableOpacity>
           <View style={{flexDirection: 'row'}}>
-            {/* <Button style={{backgroundColor:'yellow'}} onPress={() => this.props.navigation.goBack()}>
+            {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon
                 type="FontAwesome"
                 name="chevron-left"
                 style={{color: 'black', fontSize: 20, marginTop: 50}}
               /> */}
-              <Text style={{marginTop: 14, fontSize: 25, marginLeft: 30}}>
-                Profile
+              <Text style={{marginTop: 25, fontSize: 25, marginLeft: 30}}>
+                EditProfile
               </Text>
             {/* </Button> */}
-          
-            
+            <Button transparent onPress={() => this.deleteToken()}>
+              <Icon
+                type="FontAwesome"
+                name="sign-out"
+                style={{color: 'black', fontSize: 30, marginTop: 30, marginLeft: 230}}
+              />
+            </Button>
           </View>
           {/* <Image source={require('../Assets/profilebackground.png')} style={{width: 100, height: 100,resizeMode:'contain'}}/> */}
           <View style={{alignSelf: 'center'}}>
@@ -180,7 +154,7 @@ export default class Profile extends Component {
               <Item inlineLabel style={styles.form}>
                 <Label> username</Label>
                 <Input
-                  value={this.state.user.username}
+                 
                   returnKeyType="next"
                   onChangeText={this.handleChange('username')}
                 />
@@ -188,7 +162,7 @@ export default class Profile extends Component {
               <Item inlineLabel last style={styles.form}>
                 <Label>fullname</Label>
                 <Input
-                  value={this.state.user.fullname}
+                  
                   onChangeText={this.handleChange('fullname')}
                   returnKeyType="next"
                 />
@@ -196,20 +170,20 @@ export default class Profile extends Component {
               <Item inlineLabel style={styles.form}>
                 <Label>Email</Label>
                 <Input
-                  value={this.state.user.email}
+                 
                   onChangeText={this.handleChange('email')}
                   returnKeyType="next"
                 />
               </Item>
+              
             </View>
 
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('EditProfile')}>
+            <TouchableOpacity onPress={() => this.handleSave()}>
               <Button
-                // onPress={()=>this.handleSave()}
+                
                 rounded
                 style={styles.buttonlogin}>
-                <Text style={{fontSize: 18, color: 'white'}}>Edit</Text>
+                <Text style={{fontSize: 18, color: 'white'}}>SAVE</Text>
               </Button>
             </TouchableOpacity>
           </View>
