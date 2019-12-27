@@ -45,7 +45,7 @@ export default class EditProfile extends Component {
       .then(res => {
         console.log('res adlah', res.data.response);
        
-      }).then( ToastAndroid.show('Update Profile Succesfully', ToastAndroid.SHORT));
+      }).then( ToastAndroid.show('Profile is updated', ToastAndroid.SHORT));
       
   };
   async componentDidMount() {
@@ -63,7 +63,34 @@ export default class EditProfile extends Component {
     });
     console.log(this.state.username, 'user');
   }
- 
+  async deleteToken() {
+    Alert.alert(
+      'Logout',
+      'Are You Sure Want to Logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem('jwt');
+              this.props.navigation.navigate('Login');
+            } catch (err) {
+              console.log(`The error is: ${err}`);
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+
+    let token = AsyncStorage.jwt;
+    console.log('local', AsyncStorage, token);
+  }
   // handleSave=()=>{
   //   // console.log('hello')
   //   // console.log('usernm',this.state.username)
@@ -87,15 +114,22 @@ export default class EditProfile extends Component {
         style={{horizontal: 'true', flex: 1}}>
         <View style={{flex: 1, backgroundColor: '#F2F1F1'}}>
           <View style={{flexDirection: 'row'}}>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            {/* <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon
                 type="FontAwesome"
                 name="chevron-left"
                 style={{color: 'black', fontSize: 20, marginTop: 50}}
-              />
-              <Text style={{marginTop: 45, fontSize: 25, marginLeft: 10}}>
+              /> */}
+              <Text style={{marginTop: 25, fontSize: 25, marginLeft: 30}}>
                 EditProfile
               </Text>
+            {/* </Button> */}
+            <Button transparent onPress={() => this.deleteToken()}>
+              <Icon
+                type="FontAwesome"
+                name="sign-out"
+                style={{color: 'black', fontSize: 30, marginTop: 30, marginLeft: 230}}
+              />
             </Button>
           </View>
           {/* <Image source={require('../Assets/profilebackground.png')} style={{width: 100, height: 100,resizeMode:'contain'}}/> */}
@@ -106,7 +140,6 @@ export default class EditProfile extends Component {
                 style={styles.image}></Image>
             </View>
             <Text style={styles.textname}>{this.state.username}</Text>
-        
           </View>
           <View
             style={{
@@ -142,10 +175,7 @@ export default class EditProfile extends Component {
                   returnKeyType="next"
                 />
               </Item>
-              <Item inlineLabel last style={styles.form}>
-                <Label>Password</Label>
-                <Input secureTextEntry returnKeyType="go" />
-              </Item>
+              
             </View>
 
             <TouchableOpacity onPress={() => this.handleSave()}>

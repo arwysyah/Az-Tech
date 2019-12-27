@@ -24,7 +24,7 @@ export default class Login extends Component {
       };
     }
     async componentDidMount() {
-        let data = await AsyncStorage.getItem('jwt')
+        data = await AsyncStorage.getItem('jwt')
         console.log('ini data', data)
       try {
         if (await AsyncStorage.getItem('jwt')) {
@@ -33,18 +33,31 @@ export default class Login extends Component {
           this.props.navigation.navigate('AuthScreen');
         }
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
       }
     }
   
-     loginUser=()=> {
+    loginUser() {
       const formData = {
         username: this.state.username,
         password: this.state.password,
       };
-  
+      if (formData.username.length < 4){
+        ToastAndroid.show(
+          `Username can't be empty`,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+        );
+      } else if (formData.password.length < 4)
+        {
+        ToastAndroid.show(
+          `Password can't be empty`,
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER
+        )
+      } else {
       axios
-        .post(`https://onestopapi.herokuapp.com/login`,formData)
+        .post(`https://onestopapi.herokuapp.com/login`, formData)
         .then(res => {
           console.log(
             'ini res, response,token',
@@ -52,35 +65,39 @@ export default class Login extends Component {
             // res.data.message,
             // res.data.succes,
             res.data.token,
-           
             // res.data.data.token
             
           );
-          console.log(res.data.message,'message')
+          
             // console.log('res', res.data.data.token)
           if (res.data.status == 200) {
             AsyncStorage.setItem('jwt', res.data.token);
-            this.props.navigation.navigate('Home');
             //  console.log('jwkkkt', data)
            (ToastAndroid.show('Login Success', ToastAndroid.SHORT));
           } else {
-            ToastAndroid.show('invalid password', ToastAndroid.SHORT);
+            ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
           }
+          this.props.navigation.navigate('Home');
+          
           
         })
         .catch(err => {
-          console.log(err);
+          console.log('ini errorr',err.response.data.message);
+          ToastAndroid.show(err.response.data.message, ToastAndroid.LONG)
+        
+        
         });
+
   
       console.log(formData)
-      // this.props.navigation.navigate('Home');
+     
       //fungsi login disini
-    }
+    }}
   render() {
-    // if (this.state.loginKey) {
-    //     console.log(this.state.loginKey,'username')
-    //     return this.props.navigation.navigate('Home');
-    // }
+    if (this.state.loginKey) {
+        console.log(this.state.loginKey,'username')
+        return this.props.navigation.navigate('Home');
+    }
     return (
     //   <KeyboardAvoidingView behavior="padding" enabled>
     <>
@@ -99,7 +116,7 @@ export default class Login extends Component {
         />
         <View>
           <Text style={styles.textlogin}>
-            Become a member and enjoy the benefits!
+            Become a AZ-Tech member and enjoy the benefits!
           </Text>
 
           <View>
@@ -128,7 +145,7 @@ export default class Login extends Component {
             </Item>
           </View>
 
-          <TouchableOpacity onPress={this.loginUser()}>
+          <TouchableOpacity onPress={this.loginUser.bind(this)}>
             <Button
               rounded
               style={styles.buttonlogin}>

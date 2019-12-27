@@ -28,11 +28,11 @@ export default class Detail extends Component {
   state = {
     order: 5,
     id_user: 166004,
-    part:[]
+    part: [],
   };
 
   async componentDidMount() {
-    await this.getDetail()
+    await this.getDetail();
     const userToken = await AsyncStorage.getItem('jwt');
     const user = await decode(userToken);
     userId = user.id;
@@ -40,16 +40,18 @@ export default class Detail extends Component {
     let part = this.props.navigation.getParam('part');
   }
 
-  getDetail=()=>{
-    let part =this.props.navigation.getParam('part')
-id_partner=part.id_partner
-    Axios.get(`https://onestopapi.herokuapp.com/partner/${id_partner}`).then(res=>{
-     this.setState({
-       part:res.data.response[0]
-     })
-    })
-    console.log('partse',part)
-  }
+  getDetail = () => {
+    let part = this.props.navigation.getParam('part');
+    id_partner = part.id_partner;
+    Axios.get(`https://onestopapi.herokuapp.com/partner/${id_partner}`).then(
+      res => {
+        this.setState({
+          part: res.data.response[0],
+        });
+      },
+    );
+    console.log('partse', part);
+  };
 
   handleGetDirections = () => {
     let part = this.props.navigation.getParam('part');
@@ -196,6 +198,83 @@ id_partner=part.id_partner
       },
     ]);
   };
+  // handleSubmit = () => {
+  //   Alert.alert('Confirm Paid', 'Are you want to buy this voucher?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => console.log('cancel'),
+  //       style: 'cancel',
+  //     },
+  //     {
+  //       text: 'Confirm',
+  //       onPress: async () => {
+  //         try {
+  //           const userToken = await AsyncStorage.getItem('jwt');
+  //           const user = await decode(userToken);
+  //           userId = user.id;
+  //           console.log(userId, 'user');
+
+  //           let part = this.props.navigation.getParam('part');
+  //           id_partner = part.id_partner;
+  //           console.log(part.id_partner, 'part id');
+  //           console.log(id_partner, 'id');
+  //           // console.log('data',data.id,idBook) //navigator
+  //           let formData = {
+  //             id_user: userId,
+  //             id_partner: id_partner,
+  //           };
+
+  //           console.log('tipe', formData);
+  //           await Axios.post(
+  //             'https://onestopapi.herokuapp.com/user',
+  //             formData,
+  //           ).then(async () => {
+  //             await Axios.patch(
+  //               `https://onestopapi.herokuapp.com/partner/${id_partner}`,
+  //             ).then(async () => {
+  //               let data = await AsyncStorage.getItem('jwt');
+
+  //               const userToken = await AsyncStorage.getItem('jwt');
+  //               const user = await decode(userToken);
+  //               userId = user.id;
+  //               console.log('user id', user.id);
+  //               // console.log('resu',user.result) //ini penting
+  //               let part = this.props.navigation.getParam('part');
+  //               let id_partner = part.id_partner;
+  //               id_user = userId;
+  //               // console.log('data',data.id,idBook) //navigator
+  //               let formData = {
+  //                 id_user: id_user,
+  //                 id_partner: id_partner,
+  //               };
+  //               console.log('user', id_user);
+  //               console.log('id_patner', id_partner);
+  //               console.log('forms', formData);
+  //               // console.log(id_user,id_room, 'data')
+  //               // console.log('tipe', typeof formData);
+  //               await Axios.post(
+  //                 'http://onestopapi.herokuapp.com/user/voucher',
+  //                 formData,
+  //               );
+  //               console.log(formData, 'fo');
+  //               console.log('succes');
+  //               ToastAndroid.show(
+  //                 'Transaction Succesfully',
+  //                 ToastAndroid.SHORT,
+  //               );
+  //             });
+  //           });
+  //           console.log(part.id_partner);
+  //           console.log('succes');
+  //           ToastAndroid.show('Success Paid Your Coupon', ToastAndroid.SHORT);
+  //         } catch (error) {
+  //           console.log('error', error);
+  //         }
+  //       },
+  //       style: 'default',
+  //     },
+  //   ]);
+  // };
   handlePlus = () => {
     this.setState({
       order: this.state.order + 1,
@@ -279,38 +358,43 @@ id_partner=part.id_partner
                     this.handleSubmit();
                   }}
                   style={styles.button}>
-                  <Text style={{left: 1, top: 2 }}>
-                    <Icon style={{fontSize: 50, }} type="MaterialIcons" name="payment" />
+                  <Text style={{left: 1, top: 2}}>
+                    <Icon
+                      style={{fontSize: 50}}
+                      type="MaterialIcons"
+                      name="payment"
+                    />
                   </Text>
                 </TouchableOpacity>
-                
+
                 <View>
-                  <Text style={{fontSize:20, }}>Description:</Text>
-                  <Text>{part.description}</Text>
+                  <Text style={{fontSize: 20,color:'white'}}>Description:</Text>
+                  <Text style={{fontSize:18,color:'white'}}>{part.description}</Text>
                 </View>
               </View>
             </View>
-           
-            <View style={{justifyContent:'center',top:-20,left:150}}> 
-              <TouchableOpacity style={styles.button1} onPress={this.handleGetDirections}>
-               
-                  <Text>Get Store Location</Text>
-                
+
+            <View style={{justifyContent: 'center', top: -20, left: 150}}>
+              <TouchableOpacity
+                style={styles.button1}
+                onPress={this.handleGetDirections}>
+                <Text>Get Store Location</Text>
               </TouchableOpacity>
             </View>
-            <View>
-            <TouchableOpacity
-                  onPress={()=>{this.props.navigation.navigate('Chatbot')}
-                    
-                  }
-                  style={styles.chat}>
-                  <Text style={{left: 4, top: 3 }}>
-                    <Icon style={{fontSize: 50, }} type="MaterialIcons" name="chat" />
-                    
-                  
-                    
-                  </Text>
-                </TouchableOpacity>
+            <View style={{top:-30}}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('Chatbot');
+                }}
+                style={styles.chat}>
+                <Text style={{left: 4, top: 3}}>
+                  <Icon
+                    style={{fontSize: 50}}
+                    type="MaterialIcons"
+                    name="chat"
+                  />
+                </Text>
+              </TouchableOpacity>
             </View>
             <View style={{height: 500, marginHorizontal: 20}}>
               <MapView
@@ -383,7 +467,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     textAlign: 'center',
-   
+
     height: 50,
     width: 50,
     alignSelf: 'center',
@@ -393,7 +477,7 @@ const styles = StyleSheet.create({
     // shadowOpacity:100,
     borderTopColor: 'black',
     // shadowOffset:30,
-    marginLeft: 200
+    marginLeft: 200,
   },
   chat: {
     backgroundColor: 'yellow',
@@ -405,8 +489,8 @@ const styles = StyleSheet.create({
   },
   button1: {
     alignItems: 'center',
-alignContent:'center'
-,    textAlign: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
     justifyContent: 'center',
     height: 30,
     width: 120,

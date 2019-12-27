@@ -136,25 +136,27 @@ export default class Profile extends Component {
   render() {
     return (
       <ScrollView
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         style={{horizontal: 'true', flex: 1}}>
         <View style={{flex: 1, backgroundColor: '#F2F1F1'}}>
         <TouchableOpacity onPress={() => this.onRefresh()}>
             
-            <Icon style={{color: 'black', right: -170}} name="refresh" />
+            <Icon style={{color: 'black', left: 360, top: 40}} name="refresh" />
         
         </TouchableOpacity>
           <View style={{flexDirection: 'row'}}>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            {/* <Button style={{backgroundColor:'yellow'}} onPress={() => this.props.navigation.goBack()}>
               <Icon
                 type="FontAwesome"
                 name="chevron-left"
                 style={{color: 'black', fontSize: 20, marginTop: 50}}
-              />
-              <Text style={{marginTop: 45, fontSize: 25, marginLeft: 10}}>
+              /> */}
+              <Text style={{marginTop: 14, fontSize: 25, marginLeft: 30}}>
                 Profile
               </Text>
-            </Button>
+            {/* </Button> */}
+          
+            
           </View>
           {/* <Image source={require('../Assets/profilebackground.png')} style={{width: 100, height: 100,resizeMode:'contain'}}/> */}
           <View style={{alignSelf: 'center'}}>
@@ -199,20 +201,14 @@ export default class Profile extends Component {
                   returnKeyType="next"
                 />
               </Item>
-              <Item inlineLabel last style={styles.form}>
-                <Label>Password</Label>
-                <Input secureTextEntry returnKeyType="go" />
-              </Item>
             </View>
 
-            <TouchableOpacity
+            <TouchableOpacity style={styles.buttonlogin}
               onPress={() => this.props.navigation.navigate('EditProfile')}>
-              <Button
-                // onPress={()=>this.handleSave()}
-                rounded
-                style={styles.buttonlogin}>
-                <Text style={{fontSize: 18, color: 'white'}}>Edit</Text>
-              </Button>
+             
+                
+                <Text style={{fontSize: 18, color: 'white',textAlign:'center'}}>Edit</Text>
+           
             </TouchableOpacity>
           </View>
         </View>
@@ -268,6 +264,8 @@ const styles = StyleSheet.create({
   },
   buttonlogin: {
     marginTop: 30,
+    height:20,
+    
     backgroundColor: '#059dab',
     paddingVertical: 25,
     width: '50%',

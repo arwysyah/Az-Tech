@@ -38,9 +38,27 @@ export default class History extends Component {
 
   async componentDidMount() {
     await this.getUsers();
+    await this.onRefresh()
   }
 
   getUsers = async() => {
+    const userToken = await AsyncStorage.getItem('jwt');
+            const user = await decode(userToken);
+            userId = user.id;
+            console.log(userId, 'user');
+            
+    axios
+      .get(`https://onestopapi.herokuapp.com/user/history/${userId}`)
+      .then(res => {
+        //   console.log('res',res)
+        this.setState({
+          users: res.data.response,
+        });
+        // console.log(res.data.response,'resdata')
+        console.log('users', this.state.users);
+      });
+  };
+  onRefresh = async() => {
     const userToken = await AsyncStorage.getItem('jwt');
             const user = await decode(userToken);
             userId = user.id;
@@ -90,6 +108,11 @@ export default class History extends Component {
               History
             </Text>
           </Body>
+          <TouchableOpacity onPress={() => this.onRefresh()}>
+            
+            <Icon style={{color: 'black', left: 360, top: 40}} name="refresh" />
+        
+        </TouchableOpacity>
         </Header>
         <ScrollView>
           {/* <Container style={{padding: 21}}> */}

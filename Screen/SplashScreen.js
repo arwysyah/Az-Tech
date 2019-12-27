@@ -43,7 +43,7 @@ export default class SplashScreen extends Component {
           <Text style={styles.airkab}>
             AZ-Tech
           </Text>
-          <Image source={require('../Assets/imagelogin.jpg')} style={styles.imageair} />
+          <Image source={require('../Assets/logo.png')} style={styles.imageair} />
         </View>
       </View>
     );
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     height: 90,
     width: 90,
-    left: 140,
-    tintColor: '#FF5A5F',
+    left: 160,
+    backgroundColor:'transparent',
     top:40,
 
     borderRadius: 15,

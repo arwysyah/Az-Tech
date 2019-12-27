@@ -11,15 +11,15 @@ export default class Join extends Component {
   };
   render() {
     return (
-      <View style={{flex: 1,backgroundColor:'grey'}}>
+      <View style={{flex: 1,backgroundColor:'#059dab'}}>
         
         <View style={{top:200,left:40}}>
-          <Text style={{fontSize:32}}>Masukkan Username</Text>
+          <Text style={{fontSize:22,left:74,color:"white"}}>Masukkan Username</Text>
           <TextInput style={styles.input} placeholder="username" onChangeText={name=>{this.setState({name})}}/>
          
-              <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.navigate('ChatScreen',{name:this.state.name})}}>
+              <TouchableOpacity style={styles.button2} onPress={()=>{this.props.navigation.navigate('ChatScreen',{name:this.state.name})}}>
                   
-                  <Text style={{top:20}}>Submit</Text>
+                  <Text style={{top:10,fontWeight:'bold',fontSize:22}}>Submit</Text>
                  
               </TouchableOpacity>
         
@@ -33,15 +33,16 @@ const styles=StyleSheet.create({
         height:40,
         width:260,
         backgroundColor:'white',
-        borderRadius:7
+        borderRadius:7,
+        left:30
     },
-    button: {
+    button2: {
         alignItems: 'center',
     
         textAlign: 'center',
        
         height: 50,
-        width: 50,
+        width: 150,
         alignSelf: 'center',
         // shadowColor:'black',
         backgroundColor: 'yellow',
@@ -49,6 +50,7 @@ const styles=StyleSheet.create({
         // shadowOpacity:100,
         borderTopColor: 'black',
         // shadowOffset:30,
-        marginLeft: 200
+        marginLeft: -100,
+        top:20
       },
 })

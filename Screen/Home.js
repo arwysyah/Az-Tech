@@ -60,11 +60,11 @@ class Home extends Component {
       <View style={{backgroundColor: '#059dab', flex: 1}}>
         {/* <View> */}
           {/* <View> */}
-          <TouchableOpacity onPress={() => this.onRefresh()}>
+        
             
-              <Icon style={{color: 'black', right: -170}} name="refresh" />
+             
           
-          </TouchableOpacity>
+        
             <View style={styles.topNav}>
               <TouchableOpacity
                 onPress={() => {
@@ -79,7 +79,9 @@ class Home extends Component {
             </View>
 
             <View>
+                <TouchableOpacity onPress={() => this.onRefresh()}>
               <Text style={styles.title}>Hello {this.state.name}!</Text>
+              </TouchableOpacity>
             </View>
           {/* </View> */}
         {/* </View> */}
@@ -148,10 +150,10 @@ class Home extends Component {
                     />
                     <Text
                       style={{fontSize: 15, color: '#059dab', marginTop: 15}}>
-                      {part.name.toUpperCase()}
+                      {part.name}
                     </Text>
                     <Text style={styles.commonText}>
-                      {part.location.toUpperCase()}
+                      {part.location}
                     </Text>
                     <Text style={{fontSize: 16, color: 'grey'}}>
                       Rp. {part.price}
@@ -172,82 +174,9 @@ class Home extends Component {
             
           
 
-          <View
-            // key={index}
-            style={{
-              flexDirection: 'row',
-              marginLeft: 5,
-              paddingRight: 20,
-              flex: 1,
-              borderRadius: 15,
-              height: 280,
-              paddingLeft: 20,
-              top: 60,
-              backgroundColor: 'white',
-            }}>
-            <View style={styles.ViewData1}>
-              {/* <TouchableOpacity
-                        onPress={id => {
-                          this.props.navigation.navigate('DetailStay', {
-                            st: {...st},
-                          });
-                        }}> */}
-              <View>
-                <Image
-                  source={require('../Assets/experiences.jpg')}
-                  style={{
-                    height: 120,
-                    width: 140,
-                    borderRadius: 5,
-                    top: 20,
-                  }}
-                />
-              </View>
-              <View style={{top: 5, flexDirection: 'row'}}>
-                <Badge style={styles.Badge}>
-                  <Text>nama</Text>
-                </Badge>
-              </View>
-              <View>
-                <Text style={{top: 10, fontSize: 17}}>hello</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold', top: 10}}>
-                  Rp. /malam
-                </Text>
-              </View>
+         
               {/* </TouchableOpacity> */}
-            </View>
-            <View style={styles.ViewData1}>
-              {/* <TouchableOpacity
-                        onPress={id => {
-                          this.props.navigation.navigate('DetailStay', {
-                            st: {...st},
-                          });
-                        }}> */}
-              <View>
-                <Image
-                  source={require('../Assets/experiences.jpg')}
-                  style={{
-                    top: 20,
-                    height: 120,
-                    width: 140,
-                    borderRadius: 5,
-                  }}
-                />
-              </View>
-              <View style={{top: 5, flexDirection: 'row'}}>
-                <Badge style={styles.Badge}>
-                  <Text>nama</Text>
-                </Badge>
-              </View>
-              <View>
-                <Text style={{top: 10, fontSize: 17}}>hello</Text>
-                <Text style={{fontSize: 17, fontWeight: 'bold', top: 10}}>
-                  Rp. /malam
-                </Text>
-              </View>
-              {/* </TouchableOpacity> */}
-            </View>
-          </View>
+            
           {/* <View style={{}}></View> */}
         </ScrollView>
       </View>

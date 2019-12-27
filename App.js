@@ -20,6 +20,7 @@ import Chatbot from './Screen/ChatBot'
 import EditProfile from './Screen/editProfile'
 import Join from './Screen/Join'
 import ChatScreen from './Screen/ChatScreen'
+import DetailVoucher from './Screen/DetailVoucher'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -84,7 +85,8 @@ const DetailNavigation=createStackNavigator({
 
 const HistoryNavigation = createStackNavigator({
   History,
-  Voucher
+  Voucher,
+DetailVoucher
 }, {
   headerMode: 'none'
 })

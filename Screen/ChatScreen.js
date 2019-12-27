@@ -25,7 +25,7 @@ import Fire from '../Fire'
   render() {
     const chat = <GiftedChat messages={this.state.messages} onSend={Fire.send} user={this.user}/>
     if (Platform.OS==='android'){
-      return<KeyboardAvoidingView style={{flex:1}} behavior="pending" keyboardVerticalOffset={30} enabled>
+      return<KeyboardAvoidingView style={{flex:1,backgroundColor:'#059dab'}} behavior="pending" keyboardVerticalOffset={30} enabled>
         {chat}
       </KeyboardAvoidingView>
     }

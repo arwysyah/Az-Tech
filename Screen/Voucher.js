@@ -1,6 +1,3 @@
-
-
-
 import React, {Component} from 'react';
 import {Image} from 'react-native';
 import axios from 'axios';
@@ -32,8 +29,8 @@ import {
 export default class Voucher extends Component {
   state = {
     users: [],
-    id:166001,
-    id_transaction: this.props.navigation.getParam('id_transaction')
+    id: 369669,
+    id_transaction: this.props.navigation.getParam('id_transaction'),
   };
 
   componentDidMount() {
@@ -42,34 +39,44 @@ export default class Voucher extends Component {
 
   getUsers = () => {
     axios
-      .get(`https://onestopapi.herokuapp.com/user/voucher/${this.state.id_transaction}`)
-      .then(res=>{
-          console.log('HASIL GET USER',res.data.response)
+      .get(
+        `https://onestopapi.herokuapp.com/user/voucher/${this.state.id_transaction}`,
+      )
+      .then(res => {
+        console.log('HASIL GET USER', res.data.response);
         this.setState({
-            users:res.data.response
-        })
+          users: res.data.response,
+        });
         // console.log(res.data.response,'resdata')
-        console.log('users',this.state.users)
-      })
+        console.log('users', this.state.users);
+      });
+  };
+  updateVoucher = async () => {
+    await axios
+      .patch(
+        `https://onestopapi.herokuapp.com/partner/v/voucher/${this.state.id}`,
+      )
+      .then(res => {
+        console.log(res, 'resvon');
+      });
   };
 
   render() {
     // console.log(' ... Opening History Page');
-    console.log('ID TRANSACTTION DI VOUCER', this.state.id_transaction)
+    console.log('ID TRANSACTTION DI VOUCER', this.state.id_transaction);
 
     return (
-      <View style={{ backgroundColor:"F2F1F1" }}>
-       
-        <Header style={{ backgroundColor:"#fff", marginBottom: 50, height: 60 }}>
-          <View> 
-              <Icon
-                onPress={() => this.props.navigation.goBack()}
-                style={{color: 'black', marginTop: 23, marginLeft: 16}}
-                name="arrow-back"
-                /> 
-           </View> 
+      <View style={{backgroundColor: 'F2F1F1'}}>
+        <Header style={{backgroundColor: '#fff', marginBottom: 50, height: 60}}>
+          <View>
+            <Icon
+              onPress={() => this.props.navigation.goBack()}
+              style={{color: 'black', marginTop: 23, marginLeft: 16}}
+              name="arrow-back"
+            />
+          </View>
 
-           <Body>
+          <Body>
             <Text
               style={{
                 marginLeft: 24,
@@ -78,12 +85,11 @@ export default class Voucher extends Component {
                 width: 213,
                 textAlign: 'center',
                 backgroundColor: '#fff',
-                fontSize: 20
-               }}>
+                fontSize: 20,
+              }}>
               Voucher
-            </Text>  
-           </Body>
-          
+            </Text>
+          </Body>
         </Header>
         <ScrollView>
           {/* <Container style={{padding: 21}}> */}
@@ -99,35 +105,34 @@ export default class Voucher extends Component {
                   backgroundColor: '#fff',
                   borderRadius: 20,
                 }}>
-
-                <TouchableOpacity onPress={() => {
-                    console.log(item.id_transaction)
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('DetailVoucher', {
+                      item: {...item},
+                    });
+                  }}>
                   <Image
                     source={{uri: item.image}}
                     style={{
                       width: 150,
                       height: 190,
                       borderRadius: 20,
-                      backgroundColor: 'violet'
+                      backgroundColor: 'violet',
                     }}
                   />
                 </TouchableOpacity>
-
                 <Text
                   style={{
                     alignContent: 'space-between',
                     marginLeft: 15,
                     marginTop: 20,
                     width: 147,
-                    fontSize:12,
-                    
-
-                   }}>
-                   {/* ID Transaction : */}
+                    fontSize: 12,
+                  }}>
+                  {/* ID Transaction : */}
                   {/* {item.id_transaction}  */}
                 </Text>
-                
+
                 <Text
                   style={{
                     fontSize: 15,
@@ -138,8 +143,8 @@ export default class Voucher extends Component {
                   }}>
                   {item.name}
                 </Text>
-                
-                <Text 
+
+                <Text
                   style={{
                     marginTop: 70,
                     marginLeft: -150,
@@ -148,11 +153,12 @@ export default class Voucher extends Component {
                     borderRadius: 12,
                     height: 28,
                     textAlign: 'center',
-                    width: 100
+                    width: 100,
                   }}>
                   No.ID{item.id_voucher}
                 </Text>
-                <Text 
+
+                <Text
                   style={{
                     marginTop: 120,
                     marginLeft: -90,
@@ -161,12 +167,10 @@ export default class Voucher extends Component {
                     borderRadius: 12,
                     height: 28,
                     textAlign: 'center',
-                    width: 85
+                    width: 85,
                   }}>
                   {item.status}
                 </Text>
-              
-              
               </View>
             );
           })}
