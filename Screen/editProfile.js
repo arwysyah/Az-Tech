@@ -45,7 +45,7 @@ export default class EditProfile extends Component {
       .then(res => {
         console.log('res adlah', res.data.response);
        
-      }).then( ToastAndroid.show('invalid password', ToastAndroid.SHORT));
+      }).then( ToastAndroid.show('Update Profile Succesfully', ToastAndroid.SHORT));
       
   };
   async componentDidMount() {
@@ -63,34 +63,7 @@ export default class EditProfile extends Component {
     });
     console.log(this.state.username, 'user');
   }
-  async deleteToken() {
-    Alert.alert(
-      'Logout',
-      'Are You Sure Want to Logout?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: async () => {
-            try {
-              await AsyncStorage.removeItem('jwt');
-              this.props.navigation.navigate('Login');
-            } catch (err) {
-              console.log(`The error is: ${err}`);
-            }
-          },
-        },
-      ],
-      {cancelable: false},
-    );
-
-    let token = AsyncStorage.jwt;
-    console.log('local', AsyncStorage, token);
-  }
+ 
   // handleSave=()=>{
   //   // console.log('hello')
   //   // console.log('usernm',this.state.username)
@@ -133,11 +106,7 @@ export default class EditProfile extends Component {
                 style={styles.image}></Image>
             </View>
             <Text style={styles.textname}>{this.state.username}</Text>
-            <TouchableOpacity onPress={() => this.deleteToken()}>
-              <Button rounded style={styles.edit}>
-                <Text style={{fontSize: 16, color: 'black'}}>Logout</Text>
-              </Button>
-            </TouchableOpacity>
+        
           </View>
           <View
             style={{

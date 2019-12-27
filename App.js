@@ -18,6 +18,8 @@ import Search from './Screen/Search'
 import Test from './Screen/test'
 import Chatbot from './Screen/ChatBot'
 import EditProfile from './Screen/editProfile'
+import Join from './Screen/Join'
+import ChatScreen from './Screen/ChatScreen'
 
 const AuthStack = createStackNavigator({
   Login: {
@@ -94,7 +96,10 @@ const ProfileNavigation = createStackNavigator({
   headerMode:'none'
 })
 
-
+const ChatNavigation = createStackNavigator({
+  Join,
+  ChatScreen
+})
 const BottomNavigator = createBottomTabNavigator(
   {
     Home: {
@@ -124,14 +129,14 @@ const BottomNavigator = createBottomTabNavigator(
       },
     },
 
-  Wishlists: {
-    screen: Wishlists,
+  Join: {
+    screen:ChatNavigation,
     navigationOptions: {
-      tabBarLabel: 'Wishlists',
+      tabBarLabel: 'Inbox',
       tabBarIcon: ({tintColor}) => (
         <Icon
           type="MaterialCommunityIcons"
-          name="heart"
+          name="inbox"
           style={{color: tintColor, fontSize: 30}}
         />
       ),
